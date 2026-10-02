@@ -293,18 +293,43 @@
     setupAgeField(el.heroAgeInput);
     setupAgeField(el.inputQAge);
 
-    if (el.btnHeroAgeDec) {
-      el.btnHeroAgeDec.addEventListener("click", () => setAge(state.userAge - 1, false, null));
+    // Hold-to-repeat stepper: fires once on press, then accelerates while held
+    function setupStepper(btn, stepFn) {
+      if (!btn) return;
+      let timer = null;
+      let accelTimer = null;
+      let delay = 360; // ms before first repeat
+      const MIN_DELAY = 40;
+
+      function fire() { stepFn(); }
+      function startRepeat() {
+        delay = 120;
+        timer = setTimeout(function tick() {
+          fire();
+          delay = Math.max(MIN_DELAY, delay * 0.85);
+          timer = setTimeout(tick, delay);
+        }, delay);
+      }
+      function stop() {
+        clearTimeout(timer);
+        clearTimeout(accelTimer);
+        timer = null;
+        accelTimer = null;
+        delay = 360;
+      }
+
+      btn.addEventListener("mousedown", (e) => { e.preventDefault(); fire(); accelTimer = setTimeout(startRepeat, delay); });
+      btn.addEventListener("mouseup", stop);
+      btn.addEventListener("mouseleave", stop);
+      btn.addEventListener("touchstart", (e) => { e.preventDefault(); fire(); accelTimer = setTimeout(startRepeat, delay); }, { passive: false });
+      btn.addEventListener("touchend", stop);
+      btn.addEventListener("touchcancel", stop);
     }
-    if (el.btnHeroAgeInc) {
-      el.btnHeroAgeInc.addEventListener("click", () => setAge(state.userAge + 1, false, null));
-    }
-    if (el.btnQAgeDec) {
-      el.btnQAgeDec.addEventListener("click", () => setAge(state.userAge - 1, true, null));
-    }
-    if (el.btnQAgeInc) {
-      el.btnQAgeInc.addEventListener("click", () => setAge(state.userAge + 1, true, null));
-    }
+
+    setupStepper(el.btnHeroAgeDec, () => setAge(state.userAge - 1, false, null));
+    setupStepper(el.btnHeroAgeInc, () => setAge(state.userAge + 1, false, null));
+    setupStepper(el.btnQAgeDec,    () => setAge(state.userAge - 1, true, null));
+    setupStepper(el.btnQAgeInc,    () => setAge(state.userAge + 1, true, null));
 
     // Prev / Next
     if (el.btnPrev) el.btnPrev.addEventListener("click", prevQuestion);
