@@ -279,6 +279,17 @@
     if (el.btnRetake) el.btnRetake.addEventListener("click", resetQuiz);
     if (el.btnShare) el.btnShare.addEventListener("click", handleShare);
 
+    // Toggle Live Telemetry Drawer during Quiz
+    const btnToggleTelemetry = $("btn-toggle-quiz-telemetry");
+    const drawerCollapse = $("quiz-telemetry-collapse");
+    if (btnToggleTelemetry && drawerCollapse) {
+      btnToggleTelemetry.addEventListener("click", () => {
+        const isOpen = drawerCollapse.style.display !== "none";
+        drawerCollapse.style.display = isOpen ? "none" : "block";
+        btnToggleTelemetry.classList.toggle("open", !isOpen);
+      });
+    }
+
     // Language switcher buttons
     document.querySelectorAll(".lang-btn").forEach((btn) => {
       btn.addEventListener("click", () => {

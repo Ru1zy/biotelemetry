@@ -103,7 +103,9 @@ const I18N = {
         statusCritical: "Критичне навантаження",
         diagnosticFactors: "Діагностичні фактори системи:",
         factorsEmptyHint: "Питання цього розділу ({count} шт.) ще не заповнено. Оберіть варіанти відповідей у тесті, щоб переглянути клінічні маркери.",
-        gotoSysBtn: "Перейти до запитань цього розділу"
+        gotoSysBtn: "Перейти до запитань цього розділу",
+        cockpitDrawerTitle: "Анатомічна карта систем організму (8 систем)",
+        cockpitDrawerHint: "Показати 3D анатомію"
       },
 
       // Hotspots
@@ -271,7 +273,9 @@ const I18N = {
         statusCritical: "Критическая нагрузка",
         diagnosticFactors: "Диагностические факторы системы:",
         factorsEmptyHint: "Вопросы этого раздела ({count} шт.) еще не заполнены. Выберите варианты ответов в тесте для отображения клинических маркеров.",
-        gotoSysBtn: "Перейти к вопросам этого раздела"
+        gotoSysBtn: "Перейти к вопросам этого раздела",
+        cockpitDrawerTitle: "Анатомическая карта систем организма (8 систем)",
+        cockpitDrawerHint: "Показать 3D анатомию"
       },
 
       // Hotspots
@@ -439,7 +443,9 @@ const I18N = {
         statusCritical: "Critical Stress",
         diagnosticFactors: "System Diagnostic Factors:",
         factorsEmptyHint: "Questions in this section ({count}) are not yet completed. Select answers in the assessment to view clinical biomarkers.",
-        gotoSysBtn: "Proceed to questions in this section"
+        gotoSysBtn: "Proceed to questions in this section",
+        cockpitDrawerTitle: "Anatomical Systems Map (8 Systems)",
+        cockpitDrawerHint: "Toggle 3D anatomy"
       },
 
       // Hotspots

@@ -214,8 +214,22 @@
         </div>
       </div>
 
-      <!-- Multilayer Live Telemetry Cockpit -->
-      <div id="quiz-body-cockpit" style="margin-top: 24px;"></div>
+      <!-- Collapsible Live Telemetry Drawer during Quiz -->
+      <div class="quiz-telemetry-drawer-wrap">
+        <button type="button" id="btn-toggle-quiz-telemetry" class="quiz-telemetry-toggle-btn">
+          <span class="toggle-btn-left">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07l14.14-14.14"/></svg>
+            <span data-i18n="hud.cockpitDrawerTitle">Анатомічна карта систем організму (8 систем)</span>
+          </span>
+          <span class="toggle-btn-right">
+            <span id="quiz-telemetry-hint" class="toggle-hint-text" data-i18n="hud.cockpitDrawerHint">Показати 3D анатомію</span>
+            <span id="quiz-telemetry-arrow" class="toggle-arrow">▾</span>
+          </span>
+        </button>
+        <div id="quiz-telemetry-collapse" class="quiz-telemetry-collapse" style="display: none;">
+          <div id="quiz-body-cockpit"></div>
+        </div>
+      </div>
     </section>
 
     <!-- ==========================================

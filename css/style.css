@@ -548,6 +548,52 @@ body {
   margin-bottom: 16px;
 }
 
+/* Plain-Language Explainer Callout ("Простыми словами") */
+.q-simple-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: rgba(56, 189, 248, 0.05);
+  border: 1px solid rgba(56, 189, 248, 0.16);
+  border-left: 3px solid var(--accent-cyan);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  color: #cbd5e1;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.q-simple-hint .hint-icon {
+  font-size: 16px;
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+
+.q-simple-hint .hint-text {
+  flex: 1;
+}
+
+/* Inline Exact Age Picker on Question 1 */
+.q-age-picker-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  padding: 12px 18px;
+  margin-bottom: 16px;
+}
+
+.q-age-picker-wrap .age-picker-prompt {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
 /* Research Info Button */
 .study-trigger-btn {
   display: inline-flex;

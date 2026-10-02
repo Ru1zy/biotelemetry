@@ -71,36 +71,28 @@
 
           <!-- CENTER VIEWPORT: MULTILAYER ANATOMY -->
           <div class="bio-viewport-panel">
-            <!-- Layer Switcher Tabs -->
-            <div class="bio-layer-tabs">
-              <button type="button" class="bio-layer-btn ${this.activeLayer === "organs" ? "active" : ""}" data-layer="organs">
-                <span>🫀</span>
+            <!-- Layer Switcher Segmented Control -->
+            <div class="bio-layer-tabs" role="tablist">
+              <button type="button" role="tab" class="bio-layer-btn ${this.activeLayer === "organs" ? "active" : ""}" data-layer="organs">
+                <svg class="layer-tab-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 <span>${t("layers.organs")}</span>
               </button>
-              <button type="button" class="bio-layer-btn ${this.activeLayer === "muscles" ? "active" : ""}" data-layer="muscles">
-                <span>💪</span>
+              <button type="button" role="tab" class="bio-layer-btn ${this.activeLayer === "muscles" ? "active" : ""}" data-layer="muscles">
+                <svg class="layer-tab-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 18h12M6 6h12M9 12h6M4 10h16M4 14h16"/></svg>
                 <span>${t("layers.muscles")}</span>
               </button>
-              <button type="button" class="bio-layer-btn ${this.activeLayer === "skeleton" ? "active" : ""}" data-layer="skeleton">
-                <span>🦴</span>
+              <button type="button" role="tab" class="bio-layer-btn ${this.activeLayer === "skeleton" ? "active" : ""}" data-layer="skeleton">
+                <svg class="layer-tab-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M8 8l8 8"/></svg>
                 <span>${t("layers.skeleton")}</span>
               </button>
-              <button type="button" class="bio-layer-btn ${this.activeLayer === "nerves" ? "active" : ""}" data-layer="nerves">
-                <span>⚡</span>
+              <button type="button" role="tab" class="bio-layer-btn ${this.activeLayer === "nerves" ? "active" : ""}" data-layer="nerves">
+                <svg class="layer-tab-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                 <span>${t("layers.nerves")}</span>
               </button>
             </div>
 
             <!-- Body Frame with Multi-Layer Images -->
             <div class="bio-body-frame" id="${this.container.id}-body-frame">
-              <div class="bio-scan-beam" aria-hidden="true"></div>
-
-              <!-- ECG Heartbeat Widget -->
-              <div class="bio-ecg-overlay">
-                <span class="bio-ecg-pulse"></span>
-                <span id="${this.container.id}-ecg-text">HR: 68 BPM</span>
-              </div>
-
               <!-- Visual Images Stack -->
               <img src="img/layer-organs.jpg" class="bio-layer-img ${this.activeLayer === "organs" ? "active" : ""}" data-layer="organs" alt="${t("layers.organs")}" />
               <img src="img/layer-muscles.jpg" class="bio-layer-img ${this.activeLayer === "muscles" ? "active" : ""}" data-layer="muscles" alt="${t("layers.muscles")}" />
