@@ -1,0 +1,641 @@
+/* ==========================================================
+   BIO INC. REDEMPTION TELEMETRY & MULTILAYER ANATOMY SYSTEM
+   Dark Sci-Fi Clinical Telemetry HUD
+   ========================================================== */
+
+:root {
+  --bio-bg: #050811;
+  --bio-surface: rgba(10, 16, 30, 0.88);
+  --bio-surface-elevated: rgba(15, 23, 42, 0.95);
+  --bio-border: rgba(0, 229, 255, 0.2);
+  --bio-border-glow: 0 0 16px rgba(0, 229, 255, 0.25);
+  --bio-cyan: #00e5ff;
+  --bio-emerald: #00e676;
+  --bio-amber: #ffab00;
+  --bio-rose: #ff1744;
+  --bio-purple: #d500f9;
+}
+
+/* Main Bio Inc Container */
+.bio-cockpit {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  background: radial-gradient(circle at 50% 20%, rgba(0, 229, 255, 0.05) 0%, #050811 85%);
+  border: 1px solid var(--bio-border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 992px) {
+  .bio-cockpit {
+    grid-template-columns: 290px 1fr 340px;
+    align-items: stretch;
+  }
+}
+
+/* ==========================================
+   LEFT PANEL: 8 SYSTEMS LIST (BIO INC STYLE)
+   ========================================== */
+.bio-systems-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: rgba(8, 13, 25, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-md);
+  padding: 14px 12px;
+  backdrop-filter: blur(12px);
+}
+
+.bio-panel-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--bio-cyan);
+  letter-spacing: 1px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 229, 255, 0.15);
+  margin-bottom: 4px;
+}
+
+/* Individual System Row */
+.bio-sys-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.25s var(--ease-spring);
+  user-select: none;
+  position: relative;
+}
+
+.bio-sys-row:hover {
+  background: rgba(0, 229, 255, 0.06);
+  border-color: rgba(0, 229, 255, 0.3);
+  transform: translateX(3px);
+}
+
+.bio-sys-row.active {
+  background: rgba(0, 229, 255, 0.12);
+  border-color: var(--bio-cyan);
+  box-shadow: 0 0 14px rgba(0, 229, 255, 0.25);
+}
+
+/* Circular Gauge Icon */
+.bio-gauge-wrap {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1.5px solid var(--bio-cyan);
+  transition: border-color 0.3s ease;
+}
+
+.bio-gauge-wrap.status-optimal { border-color: var(--bio-cyan); }
+.bio-gauge-wrap.status-compensated { border-color: var(--bio-amber); }
+.bio-gauge-wrap.status-critical { border-color: var(--bio-rose); }
+
+.bio-gauge-icon {
+  font-size: 16px;
+  filter: drop-shadow(0 0 4px rgba(0, 229, 255, 0.4));
+}
+
+.bio-sys-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.bio-sys-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.bio-sys-name {
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bio-sys-val {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--bio-cyan);
+}
+
+/* Progress bar under system name */
+.bio-sys-track {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.bio-sys-fill {
+  height: 100%;
+  width: 100%;
+  border-radius: 2px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s ease;
+}
+
+.bio-sys-fill.status-optimal {
+  background: linear-gradient(90deg, #00b0ff, var(--bio-cyan));
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
+}
+
+.bio-sys-fill.status-compensated {
+  background: linear-gradient(90deg, #ffa000, var(--bio-amber));
+  box-shadow: 0 0 8px rgba(255, 171, 0, 0.6);
+}
+
+.bio-sys-fill.status-critical {
+  background: linear-gradient(90deg, #d50000, var(--bio-rose));
+  box-shadow: 0 0 8px rgba(255, 23, 68, 0.6);
+}
+
+/* Question completion pill in system row */
+.bio-sys-count {
+  font-size: 9.5px;
+  font-family: var(--font-mono);
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-muted);
+}
+.bio-sys-count.done {
+  background: rgba(0, 230, 118, 0.15);
+  color: var(--bio-emerald);
+}
+
+/* ==========================================
+   CENTER PANEL: ANATOMICAL MULTI-LAYER VIEWPORT
+   ========================================= */
+.bio-viewport-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+/* Layer Switcher Tabs */
+.bio-layer-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+  background: rgba(8, 13, 25, 0.85);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  padding: 4px;
+  border-radius: var(--radius-full);
+}
+
+.bio-layer-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.bio-layer-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.bio-layer-btn.active {
+  background: rgba(0, 229, 255, 0.2);
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.3);
+  border: 1px solid rgba(0, 229, 255, 0.4);
+}
+
+/* The Body Render Frame */
+.bio-body-frame {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #020408;
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.9), inset 0 0 30px rgba(0, 229, 255, 0.05);
+}
+
+/* Multi-Layer Images Stack */
+.bio-layer-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s ease;
+  transform: scale(1.02);
+}
+
+.bio-layer-img.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+/* Scanning Laser Line */
+.bio-scan-beam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.9), transparent);
+  box-shadow: 0 0 16px rgba(0, 229, 255, 0.95);
+  animation: bio-scan 4.5s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 6;
+}
+
+@keyframes bio-scan {
+  0% { top: 2%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 98%; opacity: 0; }
+}
+
+/* ECG Heartbeat Widget In Corner */
+.bio-ecg-overlay {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(5, 8, 17, 0.75);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--bio-cyan);
+  z-index: 7;
+}
+
+.bio-ecg-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--bio-rose);
+  animation: ecg-beat 1.1s ease-in-out infinite;
+}
+
+@keyframes ecg-beat {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.4); opacity: 1; box-shadow: 0 0 8px var(--bio-rose); }
+}
+
+/* Hotspot Nodes Overlay on Body */
+.bio-hotspots-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+}
+
+.bio-pin {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: transform 0.2s ease;
+}
+
+.bio-pin:hover {
+  transform: translate(-50%, -50%) scale(1.25);
+}
+
+.bio-pin-ring {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid var(--bio-cyan);
+  border-radius: 50%;
+  animation: pin-pulse 2s infinite;
+}
+
+.bio-pin-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  transform: translate(-50%, -50%);
+  background: var(--bio-cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--bio-cyan);
+}
+
+.bio-pin.status-critical .bio-pin-ring { border-color: var(--bio-rose); animation-duration: 1.2s; }
+.bio-pin.status-critical .bio-pin-core { background: var(--bio-rose); box-shadow: 0 0 8px var(--bio-rose); }
+.bio-pin.status-optimal .bio-pin-ring { border-color: var(--bio-emerald); }
+.bio-pin.status-optimal .bio-pin-core { background: var(--bio-emerald); box-shadow: 0 0 8px var(--bio-emerald); }
+
+@keyframes pin-pulse {
+  0% { transform: scale(0.9); opacity: 0.9; }
+  50% { transform: scale(1.6); opacity: 0.15; }
+  100% { transform: scale(0.9); opacity: 0.9; }
+}
+
+/* ==========================================
+   RIGHT PANEL: INSPECTOR & CLINICAL BREAKDOWN
+   ========================================== */
+.bio-inspector-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--bio-surface);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  backdrop-filter: blur(12px);
+}
+
+.bio-insp-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 12px;
+}
+
+.bio-insp-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.bio-insp-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.bio-insp-badge.status-optimal {
+  background: rgba(0, 230, 118, 0.15);
+  color: var(--bio-emerald);
+  border: 1px solid rgba(0, 230, 118, 0.3);
+}
+
+.bio-insp-badge.status-compensated {
+  background: rgba(255, 171, 0, 0.15);
+  color: var(--bio-amber);
+  border: 1px solid rgba(255, 171, 0, 0.3);
+}
+
+.bio-insp-badge.status-critical {
+  background: rgba(255, 23, 68, 0.15);
+  color: var(--bio-rose);
+  border: 1px solid rgba(255, 23, 68, 0.3);
+}
+
+.bio-insp-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin-bottom: 12px;
+}
+
+.bio-factors-box {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+  padding-right: 4px;
+}
+
+.bio-factor-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-sm);
+  font-size: 11.5px;
+}
+
+.bio-factor-card.pos { border-left: 3px solid var(--bio-emerald); }
+.bio-factor-card.neg { border-left: 3px solid var(--bio-rose); }
+.bio-factor-card.neutral { border-left: 3px solid var(--bio-cyan); }
+
+.bio-factor-action-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 9px 12px;
+  background: rgba(0, 229, 255, 0.12);
+  border: 1px solid rgba(0, 229, 255, 0.35);
+  color: var(--bio-cyan);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.bio-factor-action-btn:hover {
+  background: rgba(0, 229, 255, 0.22);
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.3);
+}
+
+/* Language Switcher in Header */
+.lang-switcher {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
+  padding: 2px 4px;
+  gap: 2px;
+}
+
+.lang-btn {
+  background: transparent;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lang-btn:hover {
+  color: #ffffff;
+}
+
+.lang-btn.active {
+  background: var(--bio-cyan);
+  color: #050811;
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
+}
+
+/* Chapter Navigation Chips */
+.systems-chips-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 2px 14px 2px;
+  margin-bottom: 16px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 229, 255, 0.3) transparent;
+}
+
+.systems-chips-nav::-webkit-scrollbar {
+  height: 4px;
+}
+.systems-chips-nav::-webkit-scrollbar-thumb {
+  background: rgba(0, 229, 255, 0.3);
+  border-radius: 4px;
+}
+
+.system-tab-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.system-tab-chip:hover {
+  background: rgba(0, 229, 255, 0.08);
+  border-color: rgba(0, 229, 255, 0.3);
+  color: #ffffff;
+}
+
+.system-tab-chip.active {
+  background: rgba(0, 229, 255, 0.16);
+  border-color: var(--bio-cyan);
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+}
+
+.system-tab-chip.done .sys-chip-badge {
+  background: rgba(0, 230, 118, 0.2);
+  color: var(--bio-emerald);
+}
+
+.sys-chip-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+
+/* Mental Health Section */
+.mental-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+  margin-bottom: 24px;
+}
+
+.mental-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  border-top: 3px solid var(--bio-purple);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.mental-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--bio-purple);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.mental-val {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.mental-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
