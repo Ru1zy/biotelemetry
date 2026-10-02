@@ -177,6 +177,8 @@ const QUESTIONS = [
         },
         "d": 0,
         "ageVal": 20,
+        "minAge": 14,
+        "maxAge": 24,
         "l": {
           "uk": "Вік: до 25",
           "ru": "Возраст: до 25",
@@ -196,6 +198,8 @@ const QUESTIONS = [
         },
         "d": 0,
         "ageVal": 28,
+        "minAge": 25,
+        "maxAge": 34,
         "l": {
           "uk": "Вік: 25-34",
           "ru": "Возраст: 25-34",
@@ -215,6 +219,8 @@ const QUESTIONS = [
         },
         "d": 0,
         "ageVal": 38,
+        "minAge": 35,
+        "maxAge": 44,
         "l": {
           "uk": "Вік: 35-44",
           "ru": "Возраст: 35-44",
@@ -234,6 +240,8 @@ const QUESTIONS = [
         },
         "d": 0,
         "ageVal": 48,
+        "minAge": 45,
+        "maxAge": 54,
         "l": {
           "uk": "Вік: 45-54",
           "ru": "Возраст: 45-54",
@@ -253,6 +261,8 @@ const QUESTIONS = [
         },
         "d": 0,
         "ageVal": 58,
+        "minAge": 55,
+        "maxAge": 64,
         "l": {
           "uk": "Вік: 55-64",
           "ru": "Возраст: 55-64",
@@ -272,6 +282,8 @@ const QUESTIONS = [
         },
         "d": 0,
         "ageVal": 68,
+        "minAge": 65,
+        "maxAge": 120,
         "l": {
           "uk": "Вік: 65+",
           "ru": "Возраст: 65+",

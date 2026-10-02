@@ -95,27 +95,24 @@
     return +(baseExpectancy + netDelta).toFixed(1);
   }
 
-  function setAge(newAge, fromInput = false) {
-    const age = Math.max(14, Math.min(95, parseInt(newAge, 10) || 28));
+  function setAge(newAge, fromInput = false, activeInput = null) {
+    const parsed = parseInt(newAge, 10);
+    if (isNaN(parsed)) return;
+
+    const age = Math.max(14, Math.min(100, parsed));
     state.userAge = age;
-    if (el.heroAgeInput && parseInt(el.heroAgeInput.value, 10) !== age) {
+
+    // Only update input fields that the user is not actively typing in!
+    if (el.heroAgeInput && el.heroAgeInput !== activeInput && parseInt(el.heroAgeInput.value, 10) !== age) {
       el.heroAgeInput.value = age;
     }
-    if (el.inputQAge && parseInt(el.inputQAge.value, 10) !== age) {
+    if (el.inputQAge && el.inputQAge !== activeInput && parseInt(el.inputQAge.value, 10) !== age) {
       el.inputQAge.value = age;
     }
 
     const currentQ = getCurrentQuestion();
     if (currentQ && currentQ.id === "age") {
-      const match = currentQ.o.find((o) => {
-        if (age < 25 && o.ageVal === 20) return true;
-        if (age >= 25 && age <= 34 && o.ageVal === 29) return true;
-        if (age >= 35 && age <= 44 && o.ageVal === 39) return true;
-        if (age >= 45 && age <= 54 && o.ageVal === 49) return true;
-        if (age >= 55 && age <= 64 && o.ageVal === 59) return true;
-        if (age >= 65 && o.ageVal === 68) return true;
-        return false;
-      }) || currentQ.o[0];
+      const match = findAgeOption(currentQ.o, age);
 
       state.answers["age"] = {
         ...match,
@@ -126,9 +123,25 @@
         studies: currentQ.studies
       };
       if (fromInput) {
-        renderCurrentQuestion();
+        updateAgeOptionSelection(currentQ);
       }
     }
+  }
+
+  // Strict range-based age option lookup using minAge/maxAge from data
+  function findAgeOption(options, age) {
+    return options.find((o) => age >= o.minAge && age <= o.maxAge) || options[0];
+  }
+
+  function updateAgeOptionSelection(q) {
+    if (!el.qOptions) return;
+    const buttons = el.qOptions.querySelectorAll(".opt-card");
+    const matchingOpt = findAgeOption(q.o, state.userAge);
+    q.o.forEach((opt, idx) => {
+      const btn = buttons[idx];
+      if (!btn) return;
+      btn.classList.toggle("selected", opt === matchingOpt);
+    });
   }
 
   function getUnitSuffix(val, lang) {
@@ -241,28 +254,56 @@
     const btnStart = $("btn-start");
     if (btnStart) btnStart.addEventListener("click", startQuiz);
 
-    // Hero Screen Age Stepper & Input
-    if (el.heroAgeInput) {
-      el.heroAgeInput.addEventListener("input", (e) => setAge(e.target.value, false));
-      el.heroAgeInput.addEventListener("change", (e) => setAge(e.target.value, false));
-    }
-    if (el.btnHeroAgeDec) {
-      el.btnHeroAgeDec.addEventListener("click", () => setAge(state.userAge - 1, false));
-    }
-    if (el.btnHeroAgeInc) {
-      el.btnHeroAgeInc.addEventListener("click", () => setAge(state.userAge + 1, false));
+    // Age Input Setup (Focus select, non-intrusive typing without premature clamping)
+    function setupAgeField(input) {
+      if (!input) return;
+
+      input.addEventListener("focus", () => {
+        input.select();
+      });
+
+      input.addEventListener("input", (e) => {
+        const val = parseInt(e.target.value, 10);
+        if (!isNaN(val) && val >= 10 && val <= 100) {
+          setAge(val, true, e.target);
+        }
+      });
+
+      function handleCommit(e) {
+        let val = parseInt(e.target.value, 10);
+        if (isNaN(val) || val < 14) {
+          val = 14;
+        } else if (val > 100) {
+          val = 100;
+        }
+        e.target.value = val;
+        setAge(val, true, null);
+      }
+
+      input.addEventListener("blur", handleCommit);
+      input.addEventListener("change", handleCommit);
+
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          input.blur();
+        }
+      });
     }
 
-    // Question 1 Inline Exact Age Stepper & Input
-    if (el.inputQAge) {
-      el.inputQAge.addEventListener("input", (e) => setAge(e.target.value, true));
-      el.inputQAge.addEventListener("change", (e) => setAge(e.target.value, true));
+    setupAgeField(el.heroAgeInput);
+    setupAgeField(el.inputQAge);
+
+    if (el.btnHeroAgeDec) {
+      el.btnHeroAgeDec.addEventListener("click", () => setAge(state.userAge - 1, false, null));
+    }
+    if (el.btnHeroAgeInc) {
+      el.btnHeroAgeInc.addEventListener("click", () => setAge(state.userAge + 1, false, null));
     }
     if (el.btnQAgeDec) {
-      el.btnQAgeDec.addEventListener("click", () => setAge(state.userAge - 1, true));
+      el.btnQAgeDec.addEventListener("click", () => setAge(state.userAge - 1, true, null));
     }
     if (el.btnQAgeInc) {
-      el.btnQAgeInc.addEventListener("click", () => setAge(state.userAge + 1, true));
+      el.btnQAgeInc.addEventListener("click", () => setAge(state.userAge + 1, true, null));
     }
 
     // Prev / Next
@@ -477,9 +518,9 @@
     const isFirst = state.currentSystem === sysKeys[0] && state.currentQuestionIndex === 0;
     el.btnPrev.style.display = isFirst ? "none" : "inline-flex";
 
-    // Show finish early button if at least 15 questions answered
+    // Hide finish early button — all questions must be completed for valid results
     if (el.btnFinishEarly) {
-      el.btnFinishEarly.style.display = answeredCount >= 15 ? "inline-flex" : "none";
+      el.btnFinishEarly.style.display = "none";
     }
 
     // Render Options
@@ -491,10 +532,16 @@
 
       const optTitle = opt.t[lang] || opt.t.uk;
       const optNote = opt.note ? (opt.note[lang] || opt.note.uk) : "";
-      const isSelected =
-        state.answers[q.id]?.t?.[lang] === optTitle ||
-        state.answers[q.id]?.t?.uk === opt.t.uk ||
-        (q.id === "age" && (state.answers[q.id]?.ageVal === opt.ageVal || (opt.ageVal && Math.abs(state.userAge - opt.ageVal) < 5)));
+      let isSelected;
+      if (q.id === "age") {
+        // Age question: strict range match — exactly one option highlighted
+        const matchingOpt = findAgeOption(q.o, state.userAge);
+        isSelected = opt === matchingOpt;
+      } else {
+        isSelected =
+          state.answers[q.id]?.t?.[lang] === optTitle ||
+          state.answers[q.id]?.t?.uk === opt.t.uk;
+      }
 
       if (isSelected) btn.classList.add("selected");
 
