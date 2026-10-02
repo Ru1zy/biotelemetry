@@ -254,7 +254,7 @@
     const btnStart = $("btn-start");
     if (btnStart) btnStart.addEventListener("click", startQuiz);
 
-    // Age Input Setup (Focus select, non-intrusive typing without premature clamping)
+    // Age Input Setup — never clamp while user is still typing
     function setupAgeField(input) {
       if (!input) return;
 
@@ -262,31 +262,26 @@
         input.select();
       });
 
+      // While typing: silently apply if the value is a valid complete age,
+      // otherwise do nothing — let the user finish typing
       input.addEventListener("input", (e) => {
         const val = parseInt(e.target.value, 10);
-        if (!isNaN(val) && val >= 10 && val <= 100) {
+        if (!isNaN(val) && val >= 14 && val <= 100) {
           setAge(val, true, e.target);
         }
       });
 
-      function handleCommit(e) {
+      // Only clamp on blur (user finished editing)
+      input.addEventListener("blur", (e) => {
         let val = parseInt(e.target.value, 10);
-        if (isNaN(val) || val < 14) {
-          val = 14;
-        } else if (val > 100) {
-          val = 100;
-        }
+        if (isNaN(val) || val < 14) val = 14;
+        else if (val > 100) val = 100;
         e.target.value = val;
         setAge(val, true, null);
-      }
-
-      input.addEventListener("blur", handleCommit);
-      input.addEventListener("change", handleCommit);
+      });
 
       input.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-          input.blur();
-        }
+        if (e.key === "Enter") input.blur();
       });
     }
 
