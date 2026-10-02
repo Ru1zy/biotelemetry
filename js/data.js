@@ -1,6 +1,6 @@
 /**
  * BioTelemetry Actuarial & Longevity Dataset v3.0
- * 39 Evidence-Based Questions across 8 Bio Inc. Anatomical Systems.
+ * 39 Evidence-Based Questions across 8 Key Anatomical Systems.
  * Includes validated psychological, schizotypal (SPQ-B), neuroticism, and ADHD/dopaminergic scales.
  * Every study references exact, verified PubMed/NIH records.
  */

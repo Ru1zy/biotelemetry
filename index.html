@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html lang="uk">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BioTelemetry Actuarial v3.0 — Комплексна модель довголіття, систем організму та ментального здоров'я</title>
-  <meta name="description" content="Предиктивна епідеміологічна актуарна модель Гомпертца-Мейкхема на базі UK Biobank, Framingham та рецензованих досліджень PubMed. 39 біомаркерів, 8 фізіологічних систем у стилі Bio Inc.">
+  <meta name="description"
+    content="Предиктивна епідеміологічна актуарна модель Гомпертца-Мейкхема на базі UK Biobank, Framingham та рецензованих досліджень PubMed. 39 біомаркерів, 8 фізіологічних систем.">
   <meta property="og:title" content="BioTelemetry Actuarial v3.0 — Модель довголіття та здоров'я систем">
-  <meta property="og:description" content="Інтерактивна модель оцінки тривалості життя, біологічного віку, систем організму та ментального профілю.">
+  <meta property="og:description"
+    content="Інтерактивна модель оцінки тривалості життя, біологічного віку, систем організму та ментального профілю.">
   <meta property="og:type" content="website">
 
   <!-- Chart.js for scientific visualizations -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
-  <!-- Core Design System & Bio Inc HUD -->
+  <!-- Core Design System & Telemetry HUD -->
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/bio-inc.css">
+  <link rel="stylesheet" href="css/telemetry.css">
 </head>
+
 <body>
 
   <!-- Ambient Backdrop -->
@@ -65,12 +69,15 @@
           <span data-i18n="tagline">Комплексна актуарна модель тривалості життя та біометричного здоров'я</span>
         </div>
 
-        <h1 class="hero-title">
+        <h1 class="hero-title" data-i18n-html="heroTitle">
           Оцінка тривалості життя, <span>систем організму</span> та ментального здоров'я
         </h1>
 
-        <p class="hero-desc">
-          Повна біомедична симуляція індивідуального ризику смертності від усіх причин (All-Cause Mortality), функціонального резерву 8 систем організму (у стилі Bio Inc.) та ментального профілю (шизотипічний спектр, емоційна стійкість, дофамін). Розраховано за актуарним законом Гомпертца-Мейкхема на когортах UK Biobank, Framingham та Harvard T.H. Chan.
+        <p class="hero-desc" data-i18n="heroDesc">
+          Повна біомедична симуляція індивідуального ризику смертності від усіх причин (All-Cause Mortality),
+          функціонального резерву 8 систем організму та ментального профілю (шизотипічний спектр,
+          емоційна стійкість, дофамін). Розраховано за актуарним законом Гомпертца-Мейкхема на когортах UK Biobank,
+          Framingham та Harvard T.H. Chan.
         </p>
 
         <!-- Scientific Highlights -->
@@ -78,24 +85,24 @@
           <div class="trust-item">
             <div class="trust-icon">🫀</div>
             <div>
-              <div class="trust-val">39 біомаркерів</div>
-              <div class="trust-lbl">8 систем: серце, дихання, ШКТ, скелет, нерви/психіка, нирки, імунітет, м'язи</div>
+              <div class="trust-val" data-i18n="trust1Val">39 біомаркерів</div>
+              <div class="trust-lbl" data-i18n="trust1Lbl">8 систем: серце, дихання, ШКТ, скелет, нерви/психіка, нирки, імунітет, м'язи</div>
             </div>
           </div>
 
           <div class="trust-item">
             <div class="trust-icon">📐</div>
             <div>
-              <div class="trust-val">Актуарне калібрування</div>
-              <div class="trust-lbl">Формула спадної корисності (Cox HR) без завищених нереалістичних цифр</div>
+              <div class="trust-val" data-i18n="trust2Val">Актуарне калібрування</div>
+              <div class="trust-lbl" data-i18n="trust2Lbl">Формула спадної корисності (Cox HR) без завищених нереалістичних цифр</div>
             </div>
           </div>
 
           <div class="trust-item">
             <div class="trust-icon">🔬</div>
             <div>
-              <div class="trust-val">100% PubMed DOI</div>
-              <div class="trust-lbl">Прямі посилання на рецензовані першоджерела у кожному запитанні</div>
+              <div class="trust-val" data-i18n="trust3Val">100% PubMed DOI</div>
+              <div class="trust-lbl" data-i18n="trust3Lbl">Прямі посилання на рецензовані першоджерела у кожному запитанні</div>
             </div>
           </div>
         </div>
@@ -108,7 +115,8 @@
           </button>
           <div class="hero-notice">
             <span>🔒</span>
-            <span data-i18n="anonymousNotice">Анонімний аналіз. Усі розрахунки відбуваються локально у вашому браузері.</span>
+            <span data-i18n="anonymousNotice">Анонімний аналіз. Усі розрахунки відбуваються локально у вашому
+              браузері.</span>
           </div>
         </div>
       </div>
@@ -124,7 +132,7 @@
           <div id="pbar" class="progress-fill"></div>
         </div>
         <div class="progress-meta">
-          <span id="q-cat-badge" class="cat-pill">Категорія</span>
+          <span id="q-cat-badge" class="cat-pill" data-i18n="categoryPill">Категорія</span>
           <span id="ptext">0 / 39 (0%)</span>
         </div>
       </div>
@@ -136,19 +144,21 @@
       <div class="quiz-card">
         <div class="quiz-topline">
           <span id="q-badge" class="q-badge">Епідеміологія</span>
-          <button id="btn-study-modal" type="button" class="study-trigger-btn" title="Переглянути біологічний механізм та відкриті дослідження">
+          <button id="btn-study-modal" type="button" class="study-trigger-btn"
+            title="Переглянути біологічний механізм та відкриті дослідження">
             <span>📖</span>
             <span data-i18n="scientificEvidence">Наукове обґрунтування</span>
           </button>
         </div>
 
-        <h2 id="q-title" class="q-heading">Завантаження запитання...</h2>
+        <h2 id="q-title" class="q-heading" data-i18n="loadingQuestion">Завантаження запитання...</h2>
 
         <!-- Options Container -->
         <div id="q-options" class="options-list"></div>
 
         <!-- Quiz Navigation Controls -->
-        <div class="quiz-nav" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+        <div class="quiz-nav"
+          style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
           <div style="display: flex; align-items: center; gap: 10px;">
             <button id="btn-prev" type="button" class="btn-secondary" style="display: none;">
               <span>←</span>
@@ -161,7 +171,8 @@
           </div>
 
           <div style="display: flex; align-items: center; gap: 10px;">
-            <button id="btn-finish-early" type="button" class="btn-primary" style="display: none; padding: 10px 18px; font-size: 13px;">
+            <button id="btn-finish-early" type="button" class="btn-primary"
+              style="display: none; padding: 10px 18px; font-size: 13px;">
               <span>⚡</span>
               <span data-i18n="finishAndCalculate">Розрахувати результати</span>
             </button>
@@ -172,7 +183,7 @@
         </div>
       </div>
 
-      <!-- Bio Inc. Style Live Telemetry Cockpit -->
+      <!-- Multilayer Live Telemetry Cockpit -->
       <div id="quiz-body-cockpit" style="margin-top: 24px;"></div>
     </section>
 
@@ -182,8 +193,8 @@
     <section id="screen-loading" class="screen">
       <div class="loading-box">
         <div class="radar-spinner"></div>
-        <div id="log-phase" class="loading-phase">Етап 1 з 4</div>
-        <h3 class="loading-title">Компіляція біометричних факторів...</h3>
+        <div id="log-phase" class="loading-phase" data-i18n="simPhaseInitial">Етап 1 з 4</div>
+        <h3 class="loading-title" data-i18n="simLoadingTitle">Компіляція біометричних факторів...</h3>
 
         <div id="log-terminal" class="log-terminal">
           <!-- Animated logs injected by app.js -->
@@ -200,7 +211,8 @@
           <span>✓</span>
           <span data-i18n="results.completedBadge">Симуляцію успішно завершено</span>
         </div>
-        <h2 class="results-title" data-i18n="results.title">Звіт довголіття, систем організму та ментального профілю</h2>
+        <h2 class="results-title" data-i18n="results.title">Звіт довголіття, систем організму та ментального профілю
+        </h2>
       </div>
 
       <!-- Main Metric Indicators -->
@@ -209,7 +221,8 @@
           <div id="res-age" class="metric-num emerald">0 р.</div>
           <div class="metric-lbl" data-i18n="results.expectedAge">Очікувана тривалість життя</div>
           <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-top: 4px;">
-            <span data-i18n="results.ciInterval">95% ДІ:</span> <strong id="res-ci-interval" style="color: var(--accent-cyan);">—</strong>
+            <span data-i18n="results.ciInterval">95% ДІ:</span> <strong id="res-ci-interval"
+              style="color: var(--accent-cyan);">—</strong>
           </div>
         </div>
 
@@ -231,12 +244,13 @@
         <div class="milestone-lbl" data-i18n="results.milestoneHorizon">Орієнтовний віковий горизонт когорти</div>
       </div>
 
-      <!-- FULL BIO INC TELEMETRY COCKPIT IN RESULTS -->
+      <!-- MULTILAYER TELEMETRY COCKPIT IN RESULTS -->
       <div style="margin-top: 28px; margin-bottom: 28px;">
         <div class="chart-header" style="margin-bottom: 14px;">
           <div>
-            <h3 class="chart-title">Анатомічний аудит систем організму (Bio Inc. Telemetry)</h3>
-            <p class="chart-subtitle">Перемикайте шари [Органи / М'язи / Скелет / Нерви] та клікайте на системи для вивчення пошкоджень та захисних резервів</p>
+            <h3 class="chart-title" data-i18n="results.auditTitle">Анатомічний аудит систем організму</h3>
+            <p class="chart-subtitle" data-i18n="results.auditSubtitle">Перемикайте шари [Органи / М'язи / Скелет / Нерви] та клікайте на системи для
+              вивчення пошкоджень та захисних резервів</p>
           </div>
         </div>
         <div id="results-body-cockpit"></div>
@@ -246,8 +260,10 @@
       <div class="chart-card" style="margin-bottom: 24px;">
         <div class="chart-header">
           <div>
-            <h3 class="chart-title" data-i18n="results.mentalProfileTitle">Профіль психічного здоров'я та особистісні риси</h3>
-            <p class="chart-subtitle" data-i18n="results.mentalProfileDesc">Оцінка когнітивної сенситивності, шизотипічного спектра, емоційної стійкості та дофамінового балансу</p>
+            <h3 class="chart-title" data-i18n="results.mentalProfileTitle">Профіль психічного здоров'я та особистісні
+              риси</h3>
+            <p class="chart-subtitle" data-i18n="results.mentalProfileDesc">Оцінка когнітивної сенситивності,
+              шизотипічного спектра, емоційної стійкості та дофамінового балансу</p>
           </div>
         </div>
         <div id="res-mental-analysis"></div>
@@ -257,8 +273,10 @@
       <div class="chart-card">
         <div class="chart-header">
           <div>
-            <h3 class="chart-title" data-i18n="results.survivalCurveTitle">Крива ймовірності дожиття (Закон Гомпертца-Мейкхема)</h3>
-            <p class="chart-subtitle" data-i18n="results.survivalCurveDesc">Відображає відсоткову ймовірність дожити до кожного вікового рубежу</p>
+            <h3 class="chart-title" data-i18n="results.survivalCurveTitle">Крива ймовірності дожиття (Закон
+              Гомпертца-Мейкхема)</h3>
+            <p class="chart-subtitle" data-i18n="results.survivalCurveDesc">Відображає відсоткову ймовірність дожити до
+              кожного вікового рубежу</p>
           </div>
         </div>
         <div class="chart-canvas-wrap">
@@ -271,7 +289,8 @@
         <div class="chart-header">
           <div>
             <h3 class="chart-title" data-i18n="results.radarTitle">8-осьовий радар фізіологічної стійкості систем</h3>
-            <p class="chart-subtitle" data-i18n="results.radarDesc">Баланс фізіологічних резервів за 8 ключовими системами організму (шкала 0-100%)</p>
+            <p class="chart-subtitle" data-i18n="results.radarDesc">Баланс фізіологічних резервів за 8 ключовими
+              системами організму (шкала 0-100%)</p>
           </div>
         </div>
         <div class="radar-canvas-wrap">
@@ -302,8 +321,10 @@
 
       <!-- Optimization Roadmap -->
       <div class="roadmap-section">
-        <h3 class="roadmap-title-main" data-i18n="results.roadmapTitle">Карта оптимізації: персоналізований резерв років</h3>
-        <p class="roadmap-desc-main" data-i18n="results.roadmapDesc">Науково обґрунтовані зміни, що дають найбільший приріст до тривалості здорового життя (Healthspan):</p>
+        <h3 class="roadmap-title-main" data-i18n="results.roadmapTitle">Карта оптимізації: персоналізований резерв років
+        </h3>
+        <p class="roadmap-desc-main" data-i18n="results.roadmapDesc">Науково обґрунтовані зміни, що дають найбільший
+          приріст до тривалості здорового життя (Healthspan):</p>
         <div id="res-roadmap" class="roadmap-list"></div>
       </div>
 
@@ -320,7 +341,10 @@
       <!-- Scientific Disclaimer -->
       <div class="disclaimer-box">
         <strong data-i18n="results.disclaimerTitle">Наукове та правове застереження:</strong>
-        <span data-i18n="results.disclaimerText">Цей розрахунок базується на статистичних кореляціях популяційних епідеміологічних когорт (Framingham, UK Biobank, ВООЗ) та математичній моделі Гомпертца-Мейкхема. Він не враховує стохастичні форс-мажорні події і не є індивідуальним медичним діагнозом чи призначенням лікування.</span>
+        <span data-i18n="results.disclaimerText">Цей розрахунок базується на статистичних кореляціях популяційних
+          епідеміологічних когорт (Framingham, UK Biobank, ВООЗ) та математичній моделі Гомпертца-Мейкхема. Він не
+          враховує стохастичні форс-мажорні події і не є індивідуальним медичним діагнозом чи призначенням
+          лікування.</span>
       </div>
     </section>
 
@@ -333,13 +357,15 @@
     <div class="study-modal-card">
       <div class="study-modal-header">
         <div class="study-modal-title" id="study-title" data-i18n="studiesModalTitle">Наукове обґрунтування</div>
-        <button id="study-modal-close" type="button" class="study-modal-close" aria-label="Закрити модальне вікно">✕</button>
+        <button id="study-modal-close" type="button" class="study-modal-close"
+          aria-label="Закрити модальне вікно">✕</button>
       </div>
       <div class="study-modal-body">
-        <div class="study-section-label" data-i18n="mechanismTitle">Біологічний механізм впливу на тканини та старіння:</div>
+        <div class="study-section-label" data-i18n="mechanismTitle">Біологічний механізм впливу на тканини та старіння:
+        </div>
         <p id="study-mechanism" class="study-mechanism-text"></p>
 
-        <div class="study-section-label">Рецензовані наукові першоджерела (PubMed / NIH):</div>
+        <div class="study-section-label" data-i18n="peerReviewedSources">Рецензовані наукові першоджерела (PubMed / NIH):</div>
         <div id="study-links" class="study-links-stack"></div>
       </div>
     </div>
@@ -352,4 +378,5 @@
   <script src="js/body-scanner.js"></script>
   <script src="js/app.js"></script>
 </body>
+
 </html>

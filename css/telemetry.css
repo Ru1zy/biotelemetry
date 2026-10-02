@@ -1,6 +1,6 @@
 /* ==========================================================
-   BIO INC. REDEMPTION TELEMETRY & MULTILAYER ANATOMY SYSTEM
-   Dark Sci-Fi Clinical Telemetry HUD
+   BIOTELEMETRY MULTILAYER ANATOMY & SYSTEMS HUD
+   Clinical Medical Telemetry Architecture
    ========================================================== */
 
 :root {
@@ -16,7 +16,7 @@
   --bio-purple: #d500f9;
 }
 
-/* Main Bio Inc Container */
+/* Main Telemetry Cockpit Container */
 .bio-cockpit {
   display: grid;
   grid-template-columns: 1fr;
@@ -38,7 +38,7 @@
 }
 
 /* ==========================================
-   LEFT PANEL: 8 SYSTEMS LIST (BIO INC STYLE)
+   LEFT PANEL: 8 SYSTEMS LIST TELEMETRY
    ========================================== */
 .bio-systems-panel {
   display: flex;

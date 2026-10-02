@@ -114,14 +114,11 @@
   function init() {
     bindEvents();
     initCockpits();
-    renderSystemTabs();
     applyLanguage();
 
     // Listen for language switch
     window.addEventListener("bio:lang-changed", () => {
       applyLanguage();
-      renderSystemTabs();
-      renderCurrentQuestion();
     });
   }
 
@@ -145,16 +142,38 @@
 
   function applyLanguage() {
     const lang = getLang();
-    // Update data-i18n elements
-    document.querySelectorAll("[data-i18n]").forEach((el) => {
-      const key = el.getAttribute("data-i18n");
-      el.textContent = t(key);
+
+    // Update document title and meta description
+    if (window.I18N) {
+      document.title = t("docTitle");
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.setAttribute("content", t("docDesc"));
+    }
+
+    // Update text elements
+    document.querySelectorAll("[data-i18n]").forEach((node) => {
+      const key = node.getAttribute("data-i18n");
+      node.textContent = t(key);
+    });
+
+    // Update HTML elements (like hero title with span)
+    document.querySelectorAll("[data-i18n-html]").forEach((node) => {
+      const key = node.getAttribute("data-i18n-html");
+      node.innerHTML = t(key);
     });
 
     // Update language buttons active state
     document.querySelectorAll(".lang-btn").forEach((btn) => {
       btn.classList.toggle("active", btn.getAttribute("data-lang") === lang);
     });
+
+    // Re-render active screens
+    if (el.screenQuiz && el.screenQuiz.classList.contains("active")) {
+      renderSystemTabs();
+      renderCurrentQuestion();
+    } else if (el.screenResult && el.screenResult.classList.contains("active")) {
+      showResults();
+    }
   }
 
   function bindEvents() {
@@ -364,7 +383,7 @@
           ${optNote ? `<div class="opt-note">${optNote}</div>` : ""}
         </div>
         <div class="opt-delta ${opt.d > 0 ? "pos" : opt.d < 0 ? "neg" : "zero"}">
-          ${opt.d > 0 ? `+${opt.d} р.` : opt.d < 0 ? `${opt.d} р.` : "0"}
+          ${opt.d > 0 ? `+${opt.d} ${t("unitYear")}` : opt.d < 0 ? `${opt.d} ${t("unitYear")}` : "0"}
         </div>
       `;
 
@@ -422,7 +441,7 @@
         item.innerHTML = `
           <div class="study-card-meta">
             <span class="study-journal">🏛️ ${st.journal} (PMID: ${st.pmid || "Verified"})</span>
-            <span class="study-ext">PubMed ↗</span>
+            <span class="study-ext">${t("openSource")}</span>
           </div>
           <div class="study-title-text">${st.title}</div>
         `;
@@ -441,11 +460,9 @@
   function startCalculation() {
     switchScreen(el.screenQuiz, el.screenLoading);
 
-    const simulationSteps = [
-      { text: "Калібрування фонового актуарного темпу Гомпертца (α = 0.0001, β = 0.0815)...", phase: "Етап 1 з 4" },
-      { text: "Інтеграція константи стохастичного ризику Мейкхема (γ = 0.0006)...", phase: "Етап 2 з 4" },
-      { text: "Синтез індивідуальних коефіцієнтів небезпеки Кокса (HR-матриця)...", phase: "Етап 3 з 4" },
-      { text: "Побудова кумулятивної функції виживаності Каплана-Меєра...", phase: "Етап 4 з 4" }
+    const simSteps = t("simSteps");
+    const simulationSteps = Array.isArray(simSteps) ? simSteps : [
+      { text: "Калібрування фонового актуарного темпу Гомпертца...", phase: "Етап 1 з 4" }
     ];
 
     let currentLog = 0;
@@ -530,26 +547,26 @@
     const milestoneMonth = now.toLocaleString(lang === "en" ? "en-US" : lang === "ru" ? "ru-RU" : "uk-UA", { month: "long" });
 
     // Animate UI Metrics
-    animateValue(el.resAge, state.userAge, finalAge, 1100, ` ${t("hud.daysToMilestone").toLowerCase()}`);
-    animateValue(el.resYears, 0, yearsRemaining, 1100, ` ${t("hud.daysToMilestone").toLowerCase()}`);
-    animateValue(el.resBioAge, state.userAge, biologicalAge, 1100, ` ${t("hud.daysToMilestone").toLowerCase()}`);
+    animateValue(el.resAge, state.userAge, finalAge, 1100, ` ${t("unitYear")}`);
+    animateValue(el.resYears, 0, yearsRemaining, 1100, ` ${t("unitYear")}`);
+    animateValue(el.resBioAge, state.userAge, biologicalAge, 1100, ` ${t("unitYear")}`);
 
     el.resDate.textContent = `${milestoneMonth.toUpperCase()} ${milestoneYear}`;
 
     if (el.resConfidenceInterval) {
       const ciLower = Math.max(state.userAge + 1, +(finalAge - 3.2).toFixed(1));
       const ciUpper = +(finalAge + 3.2).toFixed(1);
-      el.resConfidenceInterval.textContent = `${ciLower} – ${ciUpper} ${t("hud.daysToMilestone").toLowerCase()}`;
+      el.resConfidenceInterval.textContent = `${ciLower} – ${ciUpper} ${t("unitYear")}`;
     }
 
     if (bioDelta < -0.5) {
-      el.resBioDiff.textContent = `${lang === "en" ? "Younger by" : lang === "ru" ? "Моложе на" : "Молодший на"} ${Math.abs(bioDelta).toFixed(1)} р.`;
+      el.resBioDiff.textContent = `${t("youngerBy")} ${Math.abs(bioDelta).toFixed(1)} ${t("unitYear")}`;
       el.resBioDiff.className = "stat-diff pos";
     } else if (bioDelta > 0.5) {
-      el.resBioDiff.textContent = `${lang === "en" ? "Older by" : lang === "ru" ? "Старше на" : "Старший на"} ${bioDelta.toFixed(1)} р.`;
+      el.resBioDiff.textContent = `${t("olderBy")} ${bioDelta.toFixed(1)} ${t("unitYear")}`;
       el.resBioDiff.className = "stat-diff neg";
     } else {
-      el.resBioDiff.textContent = lang === "en" ? "Matches chronological age" : lang === "ru" ? "Совпадает с паспортным" : "Збігається з паспортним";
+      el.resBioDiff.textContent = t("ageMatches");
       el.resBioDiff.className = "stat-diff zero";
     }
 
@@ -571,7 +588,7 @@
     renderSurvivalChart(state.userAge, finalAge);
     renderRadarChart(sysScores);
 
-    // Update Bio Inc Cockpit in results
+    // Update Telemetry Cockpit in results
     if (state.resultsCockpit) {
       state.resultsCockpit.update(state.answers);
     }
@@ -581,7 +598,7 @@
     if (!container) return;
     container.innerHTML = "";
     if (factors.length === 0) {
-      container.innerHTML = `<div class="factor-empty">Факторів не виявлено</div>`;
+      container.innerHTML = `<div class="factor-empty">${t("results.noFactors")}</div>`;
       return;
     }
 
@@ -593,7 +610,7 @@
       div.innerHTML = `
         <div class="factor-main">
           <div class="factor-name">${f.name}</div>
-          <div class="factor-val ${isPositive ? "text-emerald" : "text-rose"}">${sign}${f.delta} р.</div>
+          <div class="factor-val ${isPositive ? "text-emerald" : "text-rose"}">${sign}${f.delta} ${t("unitYear")}</div>
         </div>
         ${f.studies && f.studies[0] ? `
           <a href="${f.studies[0].link}" target="_blank" rel="noopener noreferrer" class="factor-study-link">
@@ -615,10 +632,10 @@
       el.resRoadmap.innerHTML = `
         <div class="roadmap-card success">
           <div class="roadmap-header">
-            <span class="roadmap-badge">Відмінно</span>
-            <span class="roadmap-years">+0 додаткових років</span>
+            <span class="roadmap-badge">${t("results.roadmapPerfectTitle")}</span>
+            <span class="roadmap-years">${t("results.roadmapPerfectGain")}</span>
           </div>
-          <p class="roadmap-desc">Ваш поточний профіль звичок уже максимально наближений до оптимального довголіття. Продовжуйте дотримуватися свого режиму!</p>
+          <p class="roadmap-desc">${t("results.roadmapPerfectDesc")}</p>
         </div>
       `;
       return;
@@ -631,10 +648,10 @@
 
       card.innerHTML = `
         <div class="roadmap-header">
-          <div class="roadmap-title">Оптимізація: ${f.name}</div>
-          <div class="roadmap-years">+${potentialGain} р. потенціалу</div>
+          <div class="roadmap-title">${t("optPrefix")} ${f.name}</div>
+          <div class="roadmap-years">+${potentialGain} ${t("potentialYears")}</div>
         </div>
-        <p class="roadmap-desc">${f.explanation || "Корекція цього показника здатна істотно знизити системний ризик смертності за даними популяційних когорт."}</p>
+        <p class="roadmap-desc">${f.explanation || t("results.roadmapDefaultDesc")}</p>
       `;
       el.resRoadmap.appendChild(card);
     });
@@ -642,28 +659,27 @@
 
   function renderMentalProfile(scores) {
     if (!el.resMentalAnalysis) return;
-    const lang = getLang();
 
-    const schizotypyLevel = scores.schizotypy > 35 ? (lang === "en" ? "Elevated Sensitization" : lang === "ru" ? "Повышенная сенситивность" : "Підвищена сенситивність") : (lang === "en" ? "Grounded Rational" : lang === "ru" ? "Рационально-прагматичный" : "Раціонально-прагматичний");
-    const neuroticismLevel = scores.neuroticism > 30 ? (lang === "en" ? "High Vulnerability" : lang === "ru" ? "Высокая эмоциональная лабильность" : "Висока емоційна лабільність") : (lang === "en" ? "Stable Equilibrium" : lang === "ru" ? "Эмоциональное равновесие" : "Емоційна рівновага");
-    const dopamineLevel = scores.dopamine > 30 ? (lang === "en" ? "Impulsive Sensation-Seeking" : lang === "ru" ? "Импульсивный поиск стимулов (СДВГ-рисы)" : "Імпульсивний пошук стимулів (СДУГ-риси)") : (lang === "en" ? "High Executive Control" : lang === "ru" ? "Устойчивый самоконтроль" : "Стійкий самоконтроль");
+    const schizotypyLevel = scores.schizotypy > 35 ? t("mentalScales.schizotypyHigh") : t("mentalScales.schizotypyNormal");
+    const neuroticismLevel = scores.neuroticism > 30 ? t("mentalScales.neuroticismHigh") : t("mentalScales.neuroticismNormal");
+    const dopamineLevel = scores.dopamine > 30 ? t("mentalScales.dopamineHigh") : t("mentalScales.dopamineNormal");
 
     el.resMentalAnalysis.innerHTML = `
       <div class="mental-grid">
         <div class="mental-card">
           <div class="mental-badge">${t("mentalScales.schizotypy")}</div>
           <div class="mental-val">${schizotypyLevel}</div>
-          <p class="mental-desc">Відображає ступінь сенсорної фільтрації таламуса, ілюзорного сприйняття та підозрілості за клінічною шкалою SPQ-B.</p>
+          <p class="mental-desc">${t("mentalScales.schizotypyDesc")}</p>
         </div>
         <div class="mental-card">
           <div class="mental-badge">${t("mentalScales.neuroticism")}</div>
           <div class="mental-val">${neuroticismLevel}</div>
-          <p class="mental-desc">Маркер реактивності вегетативної нервової системи та румінацій, що впливає на соматичний тиск і нічний сон.</p>
+          <p class="mental-desc">${t("mentalScales.neuroticismDesc")}</p>
         </div>
         <div class="mental-card">
           <div class="mental-badge">${t("mentalScales.dopamine")}</div>
           <div class="mental-val">${dopamineLevel}</div>
-          <p class="mental-desc">Баланс префронтальних рецепторів D2/D1, стійкість до компульсивних залежностей та здатність до фокусування.</p>
+          <p class="mental-desc">${t("mentalScales.dopamineDesc")}</p>
         </div>
       </div>
     `;
@@ -703,7 +719,7 @@
         labels: ages,
         datasets: [
           {
-            label: "Ваша траєкторія виживаності",
+            label: t("results.survivalUser"),
             data: userProbabilities,
             borderColor: "#00e5ff",
             backgroundColor: "rgba(0, 229, 255, 0.12)",
@@ -713,7 +729,7 @@
             pointRadius: 3
           },
           {
-            label: "Середньопопуляційна когорта",
+            label: t("results.survivalCohort"),
             data: cohortProbabilities,
             borderColor: "rgba(255, 255, 255, 0.25)",
             borderDash: [5, 5],
@@ -757,7 +773,7 @@
 
     const normalize = (val) => Math.max(20, Math.min(100, Math.round(75 + val * 6.0)));
 
-    const radarLabels = [
+    const radarLabels = t("results.radarAxes") || [
       "Кровообіг",
       "Дихання",
       "Травлення",
@@ -785,7 +801,7 @@
         labels: radarLabels,
         datasets: [
           {
-            label: "Ваш індекс резервів",
+            label: t("results.radarUser"),
             data: radarValues,
             backgroundColor: "rgba(0, 229, 255, 0.2)",
             borderColor: "#00e5ff",
@@ -794,7 +810,7 @@
             pointBorderColor: "#00e5ff"
           },
           {
-            label: "Оптимальний еталон",
+            label: t("results.radarOptimal"),
             data: [92, 92, 92, 90, 92, 90, 92, 92],
             backgroundColor: "transparent",
             borderColor: "rgba(0, 230, 118, 0.4)",
@@ -831,14 +847,14 @@
 
   function handleShare() {
     const finalAgeText = el.resAge.textContent;
-    const shareText = `Мій прогноз тривалості життя за науковою актуарною моделлю Гомпертца-Мейкхема: ${finalAgeText}. Перевір стан своїх систем на BioTelemetry!`;
+    const shareText = t("results.shareTemplate").replace("{age}", finalAgeText);
 
     if (navigator.clipboard) {
       navigator.clipboard.writeText(shareText).then(() => {
-        const oldText = el.btnShare.textContent;
-        el.btnShare.textContent = "✓ Скопійовано в буфер!";
+        const oldHtml = el.btnShare.innerHTML;
+        el.btnShare.innerHTML = `<span>${t("results.shareCopied")}</span>`;
         setTimeout(() => {
-          el.btnShare.textContent = oldText;
+          el.btnShare.innerHTML = oldHtml;
         }, 2200);
       });
     }

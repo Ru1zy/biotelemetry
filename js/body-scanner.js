@@ -1,5 +1,5 @@
 /**
- * BioTelemetry Anatomy & Systems Engine (Bio Inc. Redemption Style)
+ * BioTelemetry Anatomy & Systems Engine v3.0
  * 8 Physiological Systems Telemetry, 4 Visual Layers, and Clinical Decomposition.
  */
 
@@ -18,14 +18,14 @@
   };
 
   const HOTSPOT_PINS = [
-    { id: "brain", sys: "nervous", layer: "nerves", top: "14%", left: "50%", title: "Головний мозок / ЦНС" },
-    { id: "heart", sys: "circulatory", layer: "organs", top: "34%", left: "53%", title: "Серце / Міокард" },
-    { id: "lungs", sys: "respiratory", layer: "organs", top: "32%", left: "38%", title: "Легені / Альвеоли" },
-    { id: "liver", sys: "digestive", layer: "organs", top: "45%", left: "40%", title: "Печінка / Метаболізм" },
-    { id: "stomach", sys: "digestive", layer: "organs", top: "46%", left: "57%", title: "Шлунок / ШКТ" },
-    { id: "kidneys", sys: "renal", layer: "organs", top: "54%", left: "42%", title: "Нирки / Нефрони" },
-    { id: "spine", sys: "skeletal", layer: "skeleton", top: "50%", left: "50%", title: "Хребетний стовп" },
-    { id: "muscles", sys: "muscular", layer: "muscles", top: "38%", left: "50%", title: "М'язи тулуба / Прес" }
+    { id: "brain", sys: "nervous", layer: "nerves", top: "14%", left: "50%" },
+    { id: "heart", sys: "circulatory", layer: "organs", top: "34%", left: "53%" },
+    { id: "lungs", sys: "respiratory", layer: "organs", top: "32%", left: "38%" },
+    { id: "liver", sys: "digestive", layer: "organs", top: "45%", left: "40%" },
+    { id: "stomach", sys: "digestive", layer: "organs", top: "46%", left: "57%" },
+    { id: "kidneys", sys: "renal", layer: "organs", top: "54%", left: "42%" },
+    { id: "spine", sys: "skeletal", layer: "skeleton", top: "50%", left: "50%" },
+    { id: "muscles", sys: "muscular", layer: "muscles", top: "38%", left: "50%" }
   ];
 
   class BioTelemetryCockpit {
@@ -47,6 +47,7 @@
       window.addEventListener("bio:lang-changed", () => {
         this.render();
         this.bindEvents();
+        this.update(this.answers);
       });
     }
 
@@ -101,10 +102,10 @@
               </div>
 
               <!-- Visual Images Stack -->
-              <img src="img/layer-organs.jpg" class="bio-layer-img ${this.activeLayer === "organs" ? "active" : ""}" data-layer="organs" alt="Внутрішні органи" />
-              <img src="img/layer-muscles.jpg" class="bio-layer-img ${this.activeLayer === "muscles" ? "active" : ""}" data-layer="muscles" alt="Мускулатура" />
-              <img src="img/layer-skeleton.jpg" class="bio-layer-img ${this.activeLayer === "skeleton" ? "active" : ""}" data-layer="skeleton" alt="Скелет" />
-              <img src="img/layer-nerves.jpg" class="bio-layer-img ${this.activeLayer === "nerves" ? "active" : ""}" data-layer="nerves" alt="Нерви та Судини" />
+              <img src="img/layer-organs.jpg" class="bio-layer-img ${this.activeLayer === "organs" ? "active" : ""}" data-layer="organs" alt="${t("layers.organs")}" />
+              <img src="img/layer-muscles.jpg" class="bio-layer-img ${this.activeLayer === "muscles" ? "active" : ""}" data-layer="muscles" alt="${t("layers.muscles")}" />
+              <img src="img/layer-skeleton.jpg" class="bio-layer-img ${this.activeLayer === "skeleton" ? "active" : ""}" data-layer="skeleton" alt="${t("layers.skeleton")}" />
+              <img src="img/layer-nerves.jpg" class="bio-layer-img ${this.activeLayer === "nerves" ? "active" : ""}" data-layer="nerves" alt="${t("layers.nerves")}" />
 
               <!-- Hotspot Interactive Pins -->
               <div class="bio-hotspots-overlay" id="${this.container.id}-hotspots">
@@ -121,16 +122,16 @@
                 <span id="${this.container.id}-insp-name">Кровообіг</span>
               </div>
               <div class="bio-insp-badge status-optimal" id="${this.container.id}-insp-badge">
-                100.0% (Оптимально)
+                100.0% (${t("hud.statusOptimal")})
               </div>
             </div>
 
             <div class="bio-insp-desc" id="${this.container.id}-insp-desc">
-              Завантаження фізіологічного статусу...
+              ${t("loadingQuestion")}
             </div>
 
             <div style="font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; color: var(--bio-cyan); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px;">
-              Діагностичні фактори системи:
+              ${t("hud.diagnosticFactors")}
             </div>
 
             <div class="bio-factors-box" id="${this.container.id}-insp-factors">
@@ -139,7 +140,7 @@
 
             ${this.options.isQuizMode ? `
               <button type="button" class="bio-factor-action-btn" id="${this.container.id}-btn-goto-sys">
-                <span>Перейти до запитань цього розділу</span>
+                <span>${t("hud.gotoSysBtn")}</span>
                 <span>→</span>
               </button>
             ` : ""}
@@ -194,6 +195,7 @@
     renderHotspots() {
       const overlay = document.getElementById(`${this.container.id}-hotspots`);
       if (!overlay) return;
+      const t = (k) => (window.I18N ? window.I18N.get(k) : k);
 
       overlay.innerHTML = "";
       HOTSPOT_PINS.forEach((pin) => {
@@ -204,7 +206,7 @@
         el.className = `bio-pin status-${stats.status}`;
         el.style.top = pin.top;
         el.style.left = pin.left;
-        el.title = pin.title;
+        el.title = t(`hotspots.${pin.id}`);
 
         el.innerHTML = `
           <div class="bio-pin-ring"></div>
@@ -312,7 +314,7 @@
         sum += this.getSystemHealth(sysId).health;
         count++;
       }
-      const overall = Math.round(sum / count);
+      const overall = count > 0 ? Math.round(sum / count) : 100;
       const overallEl = document.getElementById(`${this.container.id}-overall-pct`);
       if (overallEl) {
         overallEl.textContent = `${overall}%`;
@@ -363,9 +365,10 @@
         });
 
         if (answeredFactors.length === 0) {
+          const emptyText = t("hud.factorsEmptyHint").replace("{count}", stats.totalCount);
           elFactors.innerHTML = `
             <div style="font-size: 11.5px; color: var(--text-muted); font-style: italic; padding: 12px 0;">
-              Питання цього розділу (${stats.totalCount} шт.) ще не заповнено. Оберіть варіанти відповідей у тесті, щоб переглянути клінічні маркери.
+              ${emptyText}
             </div>
           `;
         } else {
@@ -382,7 +385,7 @@
               </div>
               <div style="text-align: right;">
                 <div style="font-family: var(--font-mono); font-weight: 700; font-size: 12px; color: ${f.delta > 0 ? "var(--bio-emerald)" : f.delta < 0 ? "var(--bio-rose)" : "var(--bio-cyan)"}">
-                  ${sign}${f.delta} р.
+                  ${sign}${f.delta} ${t("unitYear")}
                 </div>
                 ${f.studies && f.studies[0] ? `
                   <a href="${f.studies[0].link}" target="_blank" rel="noopener noreferrer" style="font-size: 9.5px; color: var(--bio-cyan); text-decoration: none;">
