@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mortality & Longevity Estimator v2.4 — Наукова модель оцінки тривалості життя</title>
+  <meta name="description" content="Предиктивна епідеміологічна модель тривалості життя та крива виживаності Гомпертца-Мейкхема на базі Framingham, UK Biobank, ВООЗ та рецензованих досліджень.">
+  <meta property="og:title" content="Mortality & Longevity Estimator v2.4">
+  <meta property="og:description" content="Інтерактивна модель оцінки тривалості життя та біологічного віку на основі доказових медичних когорт.">
+  <meta property="og:type" content="website">
+
+  <!-- Chart.js for scientific visualizations -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Core Design System -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/body-scanner.css">
+</head>
+<body>
+
+  <!-- Ambient Backdrop -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+    <div class="ambient-grid"></div>
+  </div>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-icon">🧬</div>
+        <div>
+          <span class="brand-title">Mortality Estimator</span>
+          <span class="brand-badge">v2.4</span>
+        </div>
+      </div>
+      <div class="header-stats">
+        <span class="pulse-dot"></span>
+        <span>GOMPERTZ-MAKEHAM MODEL</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-wrapper">
+
+    <!-- ==========================================
+         SCREEN 1: HERO / INTRO ("ОКОЛОЛЕНДИНГ")
+         ========================================== -->
+    <section id="screen-intro" class="screen active">
+      <div class="hero-card">
+        <div class="hero-tag">
+          <span>⚡</span>
+          <span>Предиктивна актуарна модель довголіття</span>
+        </div>
+
+        <h1 class="hero-title">
+          Оцінка тривалості життя та <span>біологічного старіння</span>
+        </h1>
+
+        <p class="hero-desc">
+          Комплексна симуляція індивідуального ризику смертності від усіх причин (All-Cause Mortality) та моделювання кривої виживаності. Побудовано на базі перевірених когортних досліджень: Framingham Heart Study, UK Biobank, ВООЗ, Lancet та моделі Гомпертца-Мейкхема.
+        </p>
+
+        <!-- Scientific Highlights -->
+        <div class="trust-grid">
+          <div class="trust-item">
+            <div class="trust-icon">📊</div>
+            <div>
+              <div class="trust-val">18 біомаркерів</div>
+              <div class="trust-lbl">Охоплюють серце, метаболізм, сон, токсини та генетику</div>
+            </div>
+          </div>
+
+          <div class="trust-item">
+            <div class="trust-icon">📐</div>
+            <div>
+              <div class="trust-val">Закон Гомпертца</div>
+              <div class="trust-lbl">Актуарна експоненційна динаміка подвоєння смертності</div>
+            </div>
+          </div>
+
+          <div class="trust-item">
+            <div class="trust-icon">🔬</div>
+            <div>
+              <div class="trust-val">Рецензовані джерела</div>
+              <div class="trust-lbl">Відкриті посилання на PubMed, The Lancet, JAMA та BMJ</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA & Controls -->
+        <div class="hero-cta">
+          <button id="btn-start" type="button" class="btn-primary">
+            <span>Ініціалізувати біоаудит</span>
+            <span aria-hidden="true">→</span>
+          </button>
+          <div class="hero-notice">
+            <span>🔒</span>
+            <span>Анонімний аналіз. Жодні дані не зберігаються та не передаються третім особам.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SCREEN 2: ASSESSMENT COCKPIT (QUIZ)
+         ========================================== -->
+    <section id="screen-quiz" class="screen">
+      <div class="quiz-header">
+        <div class="progress-track">
+          <div id="pbar" class="progress-fill"></div>
+        </div>
+        <div class="progress-meta">
+          <span id="q-cat-badge" class="cat-pill">Категорія</span>
+          <span id="ptext">1 з 18 (0%)</span>
+        </div>
+      </div>
+
+      <div class="quiz-card">
+        <div class="quiz-topline">
+          <span id="q-badge" class="q-badge">Епідеміологія</span>
+          <button id="btn-study-modal" type="button" class="study-trigger-btn" title="Переглянути біологічний механізм та відкриті дослідження">
+            <span>📖</span>
+            <span>Наукове обґрунтування та дослідження</span>
+          </button>
+        </div>
+
+        <h2 id="q-title" class="q-heading">Завантаження запитання...</h2>
+
+        <!-- Options Container -->
+        <div id="q-options" class="options-list"></div>
+
+        <!-- Quiz Navigation Controls -->
+        <div class="quiz-nav">
+          <button id="btn-prev" type="button" class="btn-secondary" style="display: none;">
+            <span>←</span>
+            <span>Попереднє запитання</span>
+          </button>
+          <div class="quiz-kbd-tip">
+            <span>Підказка: використовуйте клавіші [1]-[6] для швидкого вибору</span>
+          </div>
+        </div>
+
+        <!-- Live Body Telemetry Scanner Accordion / Drawer in Quiz -->
+        <div class="quiz-scanner-wrapper">
+          <button id="btn-toggle-quiz-scanner" type="button" class="scanner-toggle-btn" aria-expanded="false" aria-controls="quiz-scanner-drawer">
+            <div class="scanner-toggle-left">
+              <span class="scanner-toggle-icon">🩻</span>
+              <span>Анатомічний сканер органів (Live телеметрія)</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span id="quiz-scanner-delta-preview" class="scanner-delta-pill">0.0 р.</span>
+              <span class="scanner-toggle-arrow">▼</span>
+            </div>
+          </button>
+          <div id="quiz-scanner-drawer" class="quiz-scanner-drawer">
+            <div id="quiz-body-scanner"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SCREEN 3: SIMULATION COMPILATION
+         ========================================== -->
+    <section id="screen-loading" class="screen">
+      <div class="loading-box">
+        <div class="radar-spinner"></div>
+        <div id="log-phase" class="loading-phase">Етап 1 з 4</div>
+        <h3 class="loading-title">Компіляція біометричних факторів...</h3>
+
+        <div id="log-terminal" class="log-terminal">
+          <!-- Animated logs injected by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SCREEN 4: RESULTS DASHBOARD
+         ========================================== -->
+    <section id="screen-result" class="screen">
+      <div class="results-header">
+        <div class="results-badge">
+          <span>✓</span>
+          <span>Симуляцію успішно завершено</span>
+        </div>
+        <h2 class="results-title">Звіт довголіття та факторний аналіз</h2>
+      </div>
+
+      <!-- Main Metric Indicators -->
+      <div class="metrics-grid">
+        <div class="metric-card highlight">
+          <div id="res-age" class="metric-num emerald">0 р.</div>
+          <div class="metric-lbl">Очікувана тривалість життя</div>
+        </div>
+
+        <div class="metric-card">
+          <div id="res-years" class="metric-num">0 р.</div>
+          <div class="metric-lbl">Залишок років життя</div>
+        </div>
+
+        <div class="metric-card accent">
+          <div id="res-bio-age" class="metric-num cyan">0 р.</div>
+          <div class="metric-lbl">Оцінений біологічний вік</div>
+          <div id="res-bio-diff" class="stat-diff zero">Розрахунок...</div>
+        </div>
+      </div>
+
+      <!-- Milestone Card -->
+      <div class="milestone-card">
+        <div id="res-date" class="milestone-val">—</div>
+        <div class="milestone-lbl">Орієнтовний віковий горизонт когорти</div>
+      </div>
+
+      <!-- Gompertz-Makeham Survival Curve Panel -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <h3 class="chart-title">Крива ймовірності дожиття (Закон Гомпертца-Мейкхема)</h3>
+            <p class="chart-subtitle">Відображає відсоткову ймовірність дожити до кожного вікового рубежу</p>
+          </div>
+        </div>
+        <div class="chart-canvas-wrap">
+          <canvas id="survivalChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Radar Resilience Panel -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <h3 class="chart-title">Радар стійкості систем організму</h3>
+            <p class="chart-subtitle">Баланс фізіологічних резервів за 7 ключовими доменами (шкала 0-100)</p>
+          </div>
+        </div>
+        <div class="radar-canvas-wrap">
+          <canvas id="radarChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Full Interactive Anatomical Audit Section in Results -->
+      <div class="results-scanner-section">
+        <div class="chart-header" style="margin-bottom: 16px;">
+          <div>
+            <h3 class="chart-title">Анатомічний аудит органів та систем</h3>
+            <p class="chart-subtitle">Натисніть на будь-який орган нижче, щоб детально дослідити сумарний баланс користі та шкоди ваших звичок</p>
+          </div>
+        </div>
+        <div id="results-body-scanner"></div>
+      </div>
+
+      <!-- Factors Breakdown (Protective vs Hazards) -->
+      <div class="factors-row">
+        <!-- Protective -->
+        <div class="factor-column">
+          <div class="factor-col-title pos">
+            <span>🛡️</span>
+            <span>Головні фактори захисту (подовжують життя)</span>
+          </div>
+          <div id="res-pos-factors" class="factor-cards-stack"></div>
+        </div>
+
+        <!-- Risks -->
+        <div class="factor-column">
+          <div class="factor-col-title neg">
+            <span>⚠️</span>
+            <span>Головні фактори ризику (скорочують життя)</span>
+          </div>
+          <div id="res-neg-factors" class="factor-cards-stack"></div>
+        </div>
+      </div>
+
+      <!-- Optimization Roadmap -->
+      <div class="roadmap-section">
+        <h3 class="roadmap-title-main">Карта оптимізації: де повернути втрачені роки?</h3>
+        <p class="roadmap-desc-main">Науково обґрунтовані зміни, що дають найбільший приріст до очікуваної тривалості життя:</p>
+        <div id="res-roadmap" class="roadmap-list"></div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="results-actions">
+        <button id="btn-retake" type="button" class="btn-primary">
+          <span>⟳ Пройти заново</span>
+        </button>
+        <button id="btn-share" type="button" class="btn-secondary">
+          <span>📋 Скопіювати результат</span>
+        </button>
+      </div>
+
+      <!-- Scientific Disclaimer -->
+      <div class="disclaimer-box">
+        <strong>Наукове та правове застереження:</strong> Цей розрахунок базується на статистичних кореляціях популяційних епідеміологічних когорт (Framingham, UK Biobank, ВООЗ) та математичній моделі Гомпертца-Мейкхема. Він не враховує стохастичні форс-мажорні події (ДТП, травми, нещасні випадки) і не є індивідуальним медичним діагнозом чи призначенням лікування.
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================
+       RESEARCH & EVIDENCE MODAL DRAWER
+       ========================================== -->
+  <div id="study-modal" class="study-modal" role="dialog" aria-modal="true" aria-labelledby="study-title">
+    <div class="study-modal-card">
+      <div class="study-modal-header">
+        <div class="study-modal-title" id="study-title">Наукове обґрунтування</div>
+        <button id="study-modal-close" type="button" class="study-modal-close" aria-label="Закрити модальне вікно">✕</button>
+      </div>
+      <div class="study-modal-body">
+        <div class="study-section-label">Біологічний механізм впливу на довголіття:</div>
+        <p id="study-mechanism" class="study-mechanism-text"></p>
+
+        <div class="study-section-label">Рецензовані наукові першоджерела (Open Access / PubMed):</div>
+        <div id="study-links" class="study-links-stack"></div>
+      </div>
+    </div>
+  </div>
+  <div id="study-modal-backdrop" class="study-modal-backdrop"></div>
+
+  <!-- Engine Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/body-scanner.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,377 @@
+/* ==========================================================
+   INTERACTIVE BIOMETRIC BODY SCANNER (TELEMETRY WIREFRAME)
+   ========================================================== */
+
+.scanner-container {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+}
+
+.scanner-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.scanner-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--accent-cyan);
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+
+.scanner-live-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--accent-emerald);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.scanner-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .scanner-layout {
+    grid-template-columns: 240px 1fr;
+  }
+}
+
+/* Body Canvas Silhouette Area */
+.body-silhouette-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 220px;
+  height: 380px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.05) 0%, transparent 75%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  overflow: hidden;
+}
+
+/* Scanning Laser Line */
+.scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.8), transparent);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.9);
+  animation: scan-vertical 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 5;
+}
+
+@keyframes scan-vertical {
+  0% { top: 4%; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { top: 96%; opacity: 0; }
+}
+
+/* Interactive SVG Organ Nodes */
+.organ-node {
+  cursor: pointer;
+  transition: all 0.25s var(--ease-spring);
+}
+
+.organ-node circle {
+  transition: all 0.3s ease;
+}
+
+.organ-node:hover circle.target-glow {
+  r: 16;
+  fill-opacity: 0.5;
+}
+
+.organ-node.status-pos circle.target-core {
+  fill: var(--accent-emerald);
+}
+.organ-node.status-pos circle.target-ring {
+  stroke: var(--accent-emerald);
+  animation: organ-pulse-pos 2s infinite;
+}
+
+.organ-node.status-neg circle.target-core {
+  fill: var(--accent-rose);
+}
+.organ-node.status-neg circle.target-ring {
+  stroke: var(--accent-rose);
+  animation: organ-pulse-neg 1.6s infinite;
+}
+
+.organ-node.status-neutral circle.target-core {
+  fill: var(--accent-cyan);
+}
+.organ-node.status-neutral circle.target-ring {
+  stroke: var(--accent-cyan);
+}
+
+@keyframes organ-pulse-pos {
+  0%, 100% { r: 10; opacity: 0.8; }
+  50% { r: 14; opacity: 0.2; }
+}
+
+@keyframes organ-pulse-neg {
+  0%, 100% { r: 10; opacity: 0.9; }
+  50% { r: 16; opacity: 0.15; }
+}
+
+/* Active Highlight on Silhouette */
+.organ-node.active circle.target-ring {
+  stroke-width: 2.5;
+  r: 18 !important;
+}
+
+/* Inspector Details Panel */
+.organ-inspector {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.organ-inspector-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.organ-inspector-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.organ-status-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.organ-status-badge.pos {
+  color: var(--accent-emerald);
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.organ-status-badge.neg {
+  color: var(--accent-rose);
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.organ-status-badge.neutral {
+  color: var(--accent-cyan);
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.organ-desc {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin-bottom: 14px;
+}
+
+/* Factors affecting this organ */
+.organ-factors-list {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.organ-factor-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+}
+
+.organ-factor-item.pos { border-left: 3px solid var(--accent-emerald); }
+.organ-factor-item.neg { border-left: 3px solid var(--accent-rose); }
+.organ-factor-item.zero { border-left: 3px solid var(--text-muted); }
+
+.organ-factor-val {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 11.5px;
+}
+
+/* Quick Organ Selector Pills (Mobile Friendly) */
+.organ-pills-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.organ-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  padding: 4px 9px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.organ-pill-btn:hover {
+  border-color: var(--accent-cyan);
+  color: #ffffff;
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.organ-pill-btn.active {
+  border-color: var(--accent-cyan);
+  color: #ffffff;
+  background: rgba(56, 189, 248, 0.16);
+}
+
+/* Quiz Scanner Accordion / Drawer */
+.quiz-scanner-wrapper {
+  margin-top: 20px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+  transition: border-color 0.25s ease;
+}
+
+.quiz-scanner-wrapper:hover {
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+.scanner-toggle-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.scanner-toggle-btn:hover {
+  background: rgba(56, 189, 248, 0.05);
+  color: #ffffff;
+}
+
+.scanner-toggle-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.scanner-toggle-icon {
+  font-size: 16px;
+  filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.5));
+}
+
+.scanner-delta-pill {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: var(--accent-cyan);
+}
+
+.scanner-delta-pill.pos {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: var(--accent-emerald);
+}
+
+.scanner-delta-pill.neg {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: var(--accent-rose);
+}
+
+.scanner-toggle-arrow {
+  font-size: 12px;
+  color: var(--text-muted);
+  transition: transform 0.3s var(--ease-spring);
+}
+
+.scanner-toggle-btn[aria-expanded="true"] .scanner-toggle-arrow {
+  transform: rotate(180deg);
+}
+
+.quiz-scanner-drawer {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+.quiz-scanner-drawer.open {
+  max-height: 900px;
+  opacity: 1;
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* Results section wrapper */
+.results-scanner-section {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
