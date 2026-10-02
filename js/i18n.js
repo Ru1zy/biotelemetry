@@ -8,8 +8,8 @@ const I18N = {
 
   translations: {
     uk: {
-      docTitle: "BioTelemetry Actuarial v3.0 — Комплексна модель довголіття, систем організму та ментального здоров'я",
-      docDesc: "Предиктивна епідеміологічна актуарна модель Гомпертца-Мейкхема на базі UK Biobank, Framingham та рецензованих досліджень PubMed. 39 біомаркерів, 8 фізіологічних систем.",
+      docTitle: "BioTelemetry — Оцінка довголіття та систем",
+      docDesc: "Комплексна актуарна модель тривалості життя, функціонального резерву 8 систем організму та ментального здоров'я на базі UK Biobank та PubMed.",
       brand: "BioTelemetry Actuarial",
       tagline: "Комплексна актуарна модель тривалості життя та біометричного здоров'я",
       modelBadge: "АКТУАРНА МОДЕЛЬ ГОМПЕРТЦА-МЕЙКХЕМА",
@@ -178,8 +178,8 @@ const I18N = {
     },
 
     ru: {
-      docTitle: "BioTelemetry Actuarial v3.0 — Комплексная модель долголетия, систем организма и ментального здоровья",
-      docDesc: "Предиктивная эпидемиологическая актуарная модель Гомпертца-Мейкхема на базе UK Biobank, Framingham и рецензируемых исследований PubMed. 39 биомаркеров, 8 физиологических систем.",
+      docTitle: "BioTelemetry — Оценка долголетия и систем",
+      docDesc: "Комплексная актуарная модель продолжительности жизни, функционального резерва 8 систем организма и ментального здоровья на базе UK Biobank и PubMed.",
       brand: "BioTelemetry Actuarial",
       tagline: "Комплексная актуарная модель продолжительности жизни и биометрического здоровья",
       modelBadge: "АКТУАРНАЯ МОДЕЛЬ ГОМПЕРТЦА-МЕЙКХЕМА",
@@ -348,8 +348,8 @@ const I18N = {
     },
 
     en: {
-      docTitle: "BioTelemetry Actuarial v3.0 — Comprehensive Longevity, Organ Systems & Mental Health Model",
-      docDesc: "Predictive actuarial Gompertz-Makeham longevity model based on UK Biobank, Framingham, and peer-reviewed PubMed cohorts. 39 biomarkers, 8 physiological systems.",
+      docTitle: "BioTelemetry — Longevity & Biomarkers Audit",
+      docDesc: "Comprehensive actuarial longevity model, 8 physiological systems reserve, and mental health profile based on UK Biobank and PubMed cohorts.",
       brand: "BioTelemetry Actuarial",
       tagline: "Comprehensive Actuarial Lifespan & Biometric Health Model",
       modelBadge: "GOMPERTZ-MAKEHAM ACTUARIAL MODEL",
