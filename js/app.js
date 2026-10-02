@@ -31,6 +31,15 @@
     qCatBadge: document.getElementById("q-cat-badge"),
     qTitle: document.getElementById("q-title"),
     qBadge: document.getElementById("q-badge"),
+    qSimpleHint: document.getElementById("q-simple-hint"),
+    qSimpleText: document.getElementById("q-simple-text"),
+    qAgePickerWrap: document.getElementById("q-age-picker-wrap"),
+    inputQAge: document.getElementById("input-q-age"),
+    btnQAgeDec: document.getElementById("btn-q-age-dec"),
+    btnQAgeInc: document.getElementById("btn-q-age-inc"),
+    heroAgeInput: document.getElementById("hero-age-input"),
+    btnHeroAgeDec: document.getElementById("btn-hero-age-dec"),
+    btnHeroAgeInc: document.getElementById("btn-hero-age-inc"),
     qOptions: document.getElementById("q-options"),
     btnStudyModal: document.getElementById("btn-study-modal"),
     studyModal: document.getElementById("study-modal"),
@@ -84,6 +93,57 @@
       netDelta = -MAX_NEG_LOSS * (1 - Math.exp(-absRaw / (MAX_NEG_LOSS * 1.1)));
     }
     return +(baseExpectancy + netDelta).toFixed(1);
+  }
+
+  function setAge(newAge, fromInput = false) {
+    const age = Math.max(14, Math.min(95, parseInt(newAge, 10) || 28));
+    state.userAge = age;
+    if (el.heroAgeInput && parseInt(el.heroAgeInput.value, 10) !== age) {
+      el.heroAgeInput.value = age;
+    }
+    if (el.inputQAge && parseInt(el.inputQAge.value, 10) !== age) {
+      el.inputQAge.value = age;
+    }
+
+    const currentQ = getCurrentQuestion();
+    if (currentQ && currentQ.id === "age") {
+      const match = currentQ.o.find((o) => {
+        if (age < 25 && o.ageVal === 20) return true;
+        if (age >= 25 && age <= 34 && o.ageVal === 29) return true;
+        if (age >= 35 && age <= 44 && o.ageVal === 39) return true;
+        if (age >= 45 && age <= 54 && o.ageVal === 49) return true;
+        if (age >= 55 && age <= 64 && o.ageVal === 59) return true;
+        if (age >= 65 && o.ageVal === 68) return true;
+        return false;
+      }) || currentQ.o[0];
+
+      state.answers["age"] = {
+        ...match,
+        qId: "age",
+        system: "circulatory",
+        questionTitle: currentQ.q,
+        explanation: currentQ.explanation,
+        studies: currentQ.studies
+      };
+      if (fromInput) {
+        renderCurrentQuestion();
+      }
+    }
+  }
+
+  function getUnitSuffix(val, lang) {
+    if (lang === "en") return " yrs";
+    if (lang === "uk") return " р.";
+    // Russian grammatical declension
+    const isFloat = val % 1 !== 0;
+    if (isFloat) return " года";
+    const abs = Math.abs(Math.round(val));
+    const mod10 = abs % 10;
+    const mod100 = abs % 100;
+    if (mod100 >= 11 && mod100 <= 19) return " лет";
+    if (mod10 === 1) return " год";
+    if (mod10 >= 2 && mod10 <= 4) return " года";
+    return " лет";
   }
 
   function animateValue(element, start, end, duration, suffix = "", prefix = "") {
@@ -180,6 +240,30 @@
     // Start button
     const btnStart = $("btn-start");
     if (btnStart) btnStart.addEventListener("click", startQuiz);
+
+    // Hero Screen Age Stepper & Input
+    if (el.heroAgeInput) {
+      el.heroAgeInput.addEventListener("input", (e) => setAge(e.target.value, false));
+      el.heroAgeInput.addEventListener("change", (e) => setAge(e.target.value, false));
+    }
+    if (el.btnHeroAgeDec) {
+      el.btnHeroAgeDec.addEventListener("click", () => setAge(state.userAge - 1, false));
+    }
+    if (el.btnHeroAgeInc) {
+      el.btnHeroAgeInc.addEventListener("click", () => setAge(state.userAge + 1, false));
+    }
+
+    // Question 1 Inline Exact Age Stepper & Input
+    if (el.inputQAge) {
+      el.inputQAge.addEventListener("input", (e) => setAge(e.target.value, true));
+      el.inputQAge.addEventListener("change", (e) => setAge(e.target.value, true));
+    }
+    if (el.btnQAgeDec) {
+      el.btnQAgeDec.addEventListener("click", () => setAge(state.userAge - 1, true));
+    }
+    if (el.btnQAgeInc) {
+      el.btnQAgeInc.addEventListener("click", () => setAge(state.userAge + 1, true));
+    }
 
     // Prev / Next
     if (el.btnPrev) el.btnPrev.addEventListener("click", prevQuestion);
@@ -280,6 +364,12 @@
   }
 
   function startQuiz() {
+    if (el.heroAgeInput) {
+      const parsed = parseInt(el.heroAgeInput.value, 10);
+      if (!isNaN(parsed) && parsed >= 14 && parsed <= 95) {
+        setAge(parsed, false);
+      }
+    }
     state.currentSystem = "circulatory";
     state.currentQuestionIndex = 0;
     state.answers = {};
@@ -353,6 +443,24 @@
     el.qTitle.textContent = q.q[lang] || q.q.uk;
     el.qBadge.textContent = `${q.badge[lang] || q.badge.uk} (${state.currentQuestionIndex + 1}/${sysQuestions.length})`;
 
+    // Plain-language hint ("Для людей / простими словами")
+    if (el.qSimpleText && q.simpleHint) {
+      el.qSimpleText.textContent = q.simpleHint[lang] || q.simpleHint.uk || "";
+      if (el.qSimpleHint) el.qSimpleHint.style.display = "flex";
+    } else if (el.qSimpleHint) {
+      el.qSimpleHint.style.display = "none";
+    }
+
+    // Question 1: exact age stepper
+    if (el.qAgePickerWrap) {
+      if (q.id === "age") {
+        el.qAgePickerWrap.style.display = "flex";
+        if (el.inputQAge) el.inputQAge.value = state.userAge;
+      } else {
+        el.qAgePickerWrap.style.display = "none";
+      }
+    }
+
     // Nav button visibility
     const sysKeys = Object.keys(window.SYSTEMS_INFO);
     const isFirst = state.currentSystem === sysKeys[0] && state.currentQuestionIndex === 0;
@@ -372,7 +480,10 @@
 
       const optTitle = opt.t[lang] || opt.t.uk;
       const optNote = opt.note ? (opt.note[lang] || opt.note.uk) : "";
-      const isSelected = state.answers[q.id]?.t?.[lang] === optTitle || state.answers[q.id]?.t?.uk === opt.t.uk;
+      const isSelected =
+        state.answers[q.id]?.t?.[lang] === optTitle ||
+        state.answers[q.id]?.t?.uk === opt.t.uk ||
+        (q.id === "age" && (state.answers[q.id]?.ageVal === opt.ageVal || (opt.ageVal && Math.abs(state.userAge - opt.ageVal) < 5)));
 
       if (isSelected) btn.classList.add("selected");
 
@@ -402,6 +513,10 @@
       explanation: q.explanation,
       studies: q.studies
     };
+
+    if (q.id === "age" && opt.ageVal) {
+      setAge(opt.ageVal, false);
+    }
 
     if (q.id === "sex") {
       const isFemale = opt.t.uk.includes("Жін") || opt.t.en?.includes("Female");
@@ -539,31 +654,42 @@
 
     // Biological age
     const bioDelta = -( (finalAge - state.baseExpectancy) * 0.65 );
-    const biologicalAge = Math.max(18, +(state.userAge + bioDelta).toFixed(1));
+    const minBio = state.userAge >= 18 ? 18 : state.userAge;
+    const biologicalAge = Math.max(minBio, +(state.userAge + bioDelta).toFixed(1));
 
     // Milestone Date
     const now = new Date();
     const milestoneYear = now.getFullYear() + Math.round(yearsRemaining);
     const milestoneMonth = now.toLocaleString(lang === "en" ? "en-US" : lang === "ru" ? "ru-RU" : "uk-UA", { month: "long" });
 
+    // Proper declensions
+    const ageSuffix = getUnitSuffix(finalAge, lang);
+    const yearsSuffix = getUnitSuffix(yearsRemaining, lang);
+    const bioSuffix = getUnitSuffix(biologicalAge, lang);
+
     // Animate UI Metrics
-    animateValue(el.resAge, state.userAge, finalAge, 1100, ` ${t("unitYear")}`);
-    animateValue(el.resYears, 0, yearsRemaining, 1100, ` ${t("unitYear")}`);
-    animateValue(el.resBioAge, state.userAge, biologicalAge, 1100, ` ${t("unitYear")}`);
+    animateValue(el.resAge, state.userAge, finalAge, 1100, ageSuffix);
+    animateValue(el.resYears, 0, yearsRemaining, 1100, yearsSuffix);
+    animateValue(el.resBioAge, state.userAge, biologicalAge, 1100, bioSuffix);
 
     el.resDate.textContent = `${milestoneMonth.toUpperCase()} ${milestoneYear}`;
 
     if (el.resConfidenceInterval) {
       const ciLower = Math.max(state.userAge + 1, +(finalAge - 3.2).toFixed(1));
       const ciUpper = +(finalAge + 3.2).toFixed(1);
-      el.resConfidenceInterval.textContent = `${ciLower} – ${ciUpper} ${t("unitYear")}`;
+      const ciUnit = lang === "en" ? "yrs" : lang === "uk" ? "р." : "года";
+      el.resConfidenceInterval.textContent = `${ciLower} – ${ciUpper} ${ciUnit}`;
     }
 
     if (bioDelta < -0.5) {
-      el.resBioDiff.textContent = `${t("youngerBy")} ${Math.abs(bioDelta).toFixed(1)} ${t("unitYear")}`;
+      const diffVal = Math.abs(bioDelta).toFixed(1);
+      const diffUnit = lang === "en" ? "yrs" : lang === "uk" ? "р." : (diffVal % 1 !== 0 ? "года" : "лет");
+      el.resBioDiff.textContent = `${t("youngerBy")} ${diffVal} ${diffUnit}`;
       el.resBioDiff.className = "stat-diff pos";
     } else if (bioDelta > 0.5) {
-      el.resBioDiff.textContent = `${t("olderBy")} ${bioDelta.toFixed(1)} ${t("unitYear")}`;
+      const diffVal = bioDelta.toFixed(1);
+      const diffUnit = lang === "en" ? "yrs" : lang === "uk" ? "р." : (diffVal % 1 !== 0 ? "года" : "лет");
+      el.resBioDiff.textContent = `${t("olderBy")} ${diffVal} ${diffUnit}`;
       el.resBioDiff.className = "stat-diff neg";
     } else {
       el.resBioDiff.textContent = t("ageMatches");
@@ -700,7 +826,7 @@
     const alpha = 0.0001;
     const beta = 0.0815;
     const gamma = 0.0006;
-    const userMultiplier = Math.exp((74.0 - expectedAge) * 0.08);
+    const userMultiplier = Math.exp((state.baseExpectancy - expectedAge) * 0.08);
 
     for (let a = startAge; a <= 104; a += 2) {
       ages.push(a);

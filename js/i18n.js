@@ -26,6 +26,13 @@ const I18N = {
       trust3Val: "100% PubMed DOI",
       trust3Lbl: "Прямі посилання на рецензовані першоджерела у кожному запитанні",
 
+      // Demographics
+      demographics: {
+        ageLabel: "Ваш точний вік (повних років):",
+        ageHint: "Від віку залежить побудова кривої дожиття за законом Гомпертца та залишок років",
+        exactAgePrompt: "Або вкажіть точну кількість років:"
+      },
+
       // Quiz
       selectSystemPrompt: "Оберіть розділ для заповнення біометричних маркерів:",
       overallProgress: "Загальний прогрес аудиту",
@@ -187,6 +194,13 @@ const I18N = {
       trust3Val: "100% PubMed DOI",
       trust3Lbl: "Прямые ссылки на рецензируемые первоисточники в каждом вопросе",
 
+      // Demographics
+      demographics: {
+        ageLabel: "Ваш точный возраст (полных лет):",
+        ageHint: "От возраста зависит расчет кривой выживаемости по закону Гомпертца и остаток лет",
+        exactAgePrompt: "Или укажите точное количество лет:"
+      },
+
       // Quiz
       selectSystemPrompt: "Выберите раздел для заполнения биометрических маркеров:",
       overallProgress: "Общий прогресс аудита",
@@ -347,6 +361,13 @@ const I18N = {
       trust2Lbl: "Diminishing returns formula (Cox HR) eliminating unrealistic inflated figures",
       trust3Val: "100% PubMed DOI",
       trust3Lbl: "Direct links to peer-reviewed sources for every question",
+
+      // Demographics
+      demographics: {
+        ageLabel: "Your current age (years):",
+        ageHint: "Chronological age calibrates the Gompertz survival curve and remaining life horizon",
+        exactAgePrompt: "Or enter your exact age:"
+      },
 
       // Quiz
       selectSystemPrompt: "Select a physiological module to input biomarker data:",
