@@ -116,8 +116,13 @@ const I18N = {
         liver: "Печінка / Метаболізм",
         stomach: "Шлунок / ШКТ",
         kidneys: "Нирки / Нефрони",
+        kidney_right: "Права нирка / Фільтрація",
+        kidney_left: "Ліва нирка / Фільтрація",
+        gut: "Кишківник / Мікробіом",
         spine: "Хребетний стовп",
-        muscles: "М'язи тулуба / Прес"
+        joints: "Суглоби / Хрящова тканина",
+        muscles: "М'язи тулуба / Прес",
+        nerves: "Периферичні нерви / Сплетення"
       },
 
       // Results
@@ -286,8 +291,13 @@ const I18N = {
         liver: "Печень / Метаболизм",
         stomach: "Желудок / ЖКТ",
         kidneys: "Почки / Нефроны",
+        kidney_right: "Правая почка / Фильтрация",
+        kidney_left: "Левая почка / Фильтрация",
+        gut: "Кишечник / Микробиом",
         spine: "Позвоночный столб",
-        muscles: "Мышцы торса / Пресс"
+        joints: "Суставы / Хрящевая ткань",
+        muscles: "Мышцы торса / Пресс",
+        nerves: "Периферические нервы / Сплетения"
       },
 
       // Results
@@ -456,8 +466,13 @@ const I18N = {
         liver: "Liver / Metabolism",
         stomach: "Stomach / GI Tract",
         kidneys: "Kidneys / Nephrons",
+        kidney_right: "Right Kidney / Filtration",
+        kidney_left: "Left Kidney / Filtration",
+        gut: "Intestines / Gut Microbiome",
         spine: "Spinal Column",
-        muscles: "Core & Skeletal Muscles"
+        joints: "Joints & Articular Cartilage",
+        muscles: "Core & Skeletal Muscles",
+        nerves: "Peripheral Nerves & Plexus"
       },
 
       // Results

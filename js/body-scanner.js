@@ -18,14 +18,37 @@
   };
 
   const HOTSPOT_PINS = [
-    { id: "brain", sys: "nervous", layer: "nerves", top: "14%", left: "50%" },
-    { id: "heart", sys: "circulatory", layer: "organs", top: "34%", left: "53%" },
-    { id: "lungs", sys: "respiratory", layer: "organs", top: "32%", left: "38%" },
-    { id: "liver", sys: "digestive", layer: "organs", top: "45%", left: "40%" },
-    { id: "stomach", sys: "digestive", layer: "organs", top: "46%", left: "57%" },
-    { id: "kidneys", sys: "renal", layer: "organs", top: "54%", left: "42%" },
-    { id: "spine", sys: "skeletal", layer: "skeleton", top: "50%", left: "50%" },
-    { id: "muscles", sys: "muscular", layer: "muscles", top: "38%", left: "50%" }
+    // Layer 1: Organs (Calibrated to 896x1200 anatomical illustration)
+    { id: "heart", sys: "circulatory", layer: "organs", top: "33%", left: "54%" },
+    { id: "lungs", sys: "respiratory", layer: "organs", top: "28%", left: "33%" },
+    { id: "lungs", sys: "respiratory", layer: "organs", top: "28%", left: "67%" },
+    { id: "liver", sys: "digestive", layer: "organs", top: "52%", left: "34%" },
+    { id: "stomach", sys: "digestive", layer: "organs", top: "57%", left: "63%" },
+    { id: "kidney_right", sys: "renal", layer: "organs", top: "63%", left: "37%" },
+    { id: "kidney_left", sys: "renal", layer: "organs", top: "63%", left: "67%" },
+    { id: "gut", sys: "immune", layer: "organs", top: "80%", left: "50%" },
+
+    // Layer 2: Skeleton
+    { id: "spine", sys: "skeletal", layer: "skeleton", top: "12%", left: "50%" },
+    { id: "spine", sys: "skeletal", layer: "skeleton", top: "58%", left: "50%" },
+    { id: "joints", sys: "skeletal", layer: "skeleton", top: "24%", left: "17%" },
+    { id: "joints", sys: "skeletal", layer: "skeleton", top: "24%", left: "83%" },
+    { id: "joints", sys: "skeletal", layer: "skeleton", top: "91%", left: "32%" },
+    { id: "joints", sys: "skeletal", layer: "skeleton", top: "91%", left: "68%" },
+
+    // Layer 3: Muscles
+    { id: "muscles", sys: "muscular", layer: "muscles", top: "32%", left: "36%" },
+    { id: "muscles", sys: "muscular", layer: "muscles", top: "32%", left: "64%" },
+    { id: "muscles", sys: "muscular", layer: "muscles", top: "58%", left: "50%" },
+    { id: "muscles", sys: "muscular", layer: "muscles", top: "48%", left: "16%" },
+    { id: "muscles", sys: "muscular", layer: "muscles", top: "48%", left: "84%" },
+
+    // Layer 4: Nerves
+    { id: "brain", sys: "nervous", layer: "nerves", top: "16%", left: "50%" },
+    { id: "brain", sys: "nervous", layer: "nerves", top: "36%", left: "50%" },
+    { id: "nerves", sys: "nervous", layer: "nerves", top: "60%", left: "50%" },
+    { id: "nerves", sys: "nervous", layer: "nerves", top: "52%", left: "20%" },
+    { id: "nerves", sys: "nervous", layer: "nerves", top: "52%", left: "80%" }
   ];
 
   class BioTelemetryCockpit {
