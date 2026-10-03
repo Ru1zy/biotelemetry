@@ -162,10 +162,10 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "On the nature of the function expressive of the law of human mortality",
-        "journal": "Philosophical Transactions of the Royal Society (1825)",
-        "pmid": "10982541",
-        "link": "https://pubmed.ncbi.nlm.nih.gov/10982541/"
+        "title": "Deciphering death: a commentary on Gompertz (1825) 'On the nature of the function expressive of the law of human mortality'",
+        "journal": "Philosophical Transactions of the Royal Society B (2015)",
+        "pmid": "25750242",
+        "link": "https://pubmed.ncbi.nlm.nih.gov/25750242/"
       }
     ],
     "o": [
@@ -317,10 +317,10 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "Sex differences in human longevity: biological and sociological perspectives",
-        "journal": "The Lancet (2020)",
-        "pmid": "28552353",
-        "link": "https://pubmed.ncbi.nlm.nih.gov/28552353/"
+        "title": "Sex Differences in Lifespan",
+        "journal": "Cell Metabolism (2016)",
+        "pmid": "27304504",
+        "link": "https://pubmed.ncbi.nlm.nih.gov/27304504/"
       }
     ],
     "o": [
@@ -511,10 +511,10 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "Resting heart rate and all-cause and cardiovascular mortality in the general population: a meta-analysis",
+        "title": "Association between resting heart rate and coronary artery disease, stroke, sudden death and noncardiovascular diseases: a meta-analysis",
         "journal": "CMAJ (2016)",
-        "pmid": "26598342",
-        "link": "https://pubmed.ncbi.nlm.nih.gov/26598342/"
+        "pmid": "27551034",
+        "link": "https://pubmed.ncbi.nlm.nih.gov/27551034/"
       }
     ],
     "o": [
@@ -635,7 +635,7 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "Association of Cardiorespiratory Fitness With Long-term Mortality",
+        "title": "Association of Cardiorespiratory Fitness With Long-term Mortality Among Adults Undergoing Exercise Treadmill Testing",
         "journal": "JAMA Network Open (2018)",
         "pmid": "30646252",
         "link": "https://pubmed.ncbi.nlm.nih.gov/30646252/"
@@ -741,7 +741,7 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "2018 AHA/ACC Guideline on the Management of Blood Cholesterol",
+        "title": "2018 AHA/ACC/AACVPR/AAPA/ABC/ACPM/ADA/AGS/APhA/ASPC/NLA/PCNA Guideline on the Management of Blood Cholesterol",
         "journal": "Circulation (2019)",
         "pmid": "30586774",
         "link": "https://pubmed.ncbi.nlm.nih.gov/30586774/"
@@ -1077,7 +1077,7 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "Estimation of the global prevalence and burden of obstructive sleep apnoea",
+        "title": "Estimation of the global prevalence and burden of obstructive sleep apnoea: a literature-based analysis",
         "journal": "The Lancet Respiratory Medicine (2019)",
         "pmid": "31300334",
         "link": "https://pubmed.ncbi.nlm.nih.gov/31300334/"
@@ -1465,7 +1465,7 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "Association between changes in red and processed meat consumption and subsequent mortality",
+        "title": "Association of changes in red meat consumption with total and cause specific mortality among US women and men",
         "journal": "BMJ (2019)",
         "pmid": "31189526",
         "link": "https://pubmed.ncbi.nlm.nih.gov/31189526/"
@@ -1553,10 +1553,10 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "Body-mass index and all-cause mortality: individual-participant-data meta-analysis",
+        "title": "Body-mass index and all-cause mortality: individual-participant-data meta-analysis of 239 prospective studies in four continents",
         "journal": "The Lancet (2016)",
-        "pmid": "27423423",
-        "link": "https://pubmed.ncbi.nlm.nih.gov/27423423/"
+        "pmid": "27423262",
+        "link": "https://pubmed.ncbi.nlm.nih.gov/27423262/"
       }
     ],
     "o": [
@@ -1659,10 +1659,10 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "Bone mineral density and mortality: prospective cohort study in UK Biobank",
-        "journal": "BMJ (2020)",
-        "pmid": "33234586",
-        "link": "https://pubmed.ncbi.nlm.nih.gov/33234586/"
+        "title": "Non-trauma mortality in elderly women with low bone mineral density: Study of Osteoporotic Fractures",
+        "journal": "The Lancet (1991)",
+        "pmid": "1677708",
+        "link": "https://pubmed.ncbi.nlm.nih.gov/1677708/"
       }
     ],
     "o": [
@@ -1747,10 +1747,10 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "Vitamin D and mortality: meta-analysis of randomised controlled trials and prospective cohorts",
-        "journal": "The Lancet Diabetes & Endocrinology (2014)",
-        "pmid": "25035252",
-        "link": "https://pubmed.ncbi.nlm.nih.gov/25035252/"
+        "title": "Vitamin D and risk of cause specific death: systematic review and meta-analysis of observational cohort and randomised intervention studies",
+        "journal": "BMJ (2014)",
+        "pmid": "24690623",
+        "link": "https://pubmed.ncbi.nlm.nih.gov/24690623/"
       }
     ],
     "o": [
@@ -1835,10 +1835,10 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "Hyperkyphotic posture and risk of future osteoporotic fractures and mortality",
-        "journal": "J Am Geriatr Soc (2004)",
-        "pmid": "15450037",
-        "link": "https://pubmed.ncbi.nlm.nih.gov/15450037/"
+        "title": "Hyperkyphotic posture predicts mortality in older community-dwelling men and women: a prospective study",
+        "journal": "Journal of the American Geriatrics Society (2004)",
+        "pmid": "15450042",
+        "link": "https://pubmed.ncbi.nlm.nih.gov/15450042/"
       }
     ],
     "o": [
@@ -1925,8 +1925,8 @@ const QUESTIONS = [
       {
         "title": "Mortality risk associated with low-trauma osteoporotic fractures and subsequent fractures in men and women",
         "journal": "JAMA (2009)",
-        "pmid": "19188335",
-        "link": "https://pubmed.ncbi.nlm.nih.gov/19188335/"
+        "pmid": "19190316",
+        "link": "https://pubmed.ncbi.nlm.nih.gov/19190316/"
       }
     ],
     "o": [
@@ -2011,10 +2011,10 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "Sleep duration and all-cause and cardiovascular mortality: a systematic review and meta-analysis",
-        "journal": "BMJ (2018)",
-        "pmid": "30089608",
-        "link": "https://pubmed.ncbi.nlm.nih.gov/30089608/"
+        "title": "Self-Reported Sleep Duration and Quality and Cardiovascular Disease and Mortality: A Dose-Response Meta-Analysis of 3.3 Million Participants",
+        "journal": "Journal of the American Heart Association (2018)",
+        "pmid": "30371228",
+        "link": "https://pubmed.ncbi.nlm.nih.gov/30371228/"
       }
     ],
     "o": [
@@ -2119,8 +2119,8 @@ const QUESTIONS = [
       {
         "title": "Sleep Drives Metabolite Clearance from the Adult Brain",
         "journal": "Science (2013)",
-        "pmid": "24136965",
-        "link": "https://pubmed.ncbi.nlm.nih.gov/24136965/"
+        "pmid": "24136970",
+        "link": "https://pubmed.ncbi.nlm.nih.gov/24136970/"
       }
     ],
     "o": [
@@ -2206,7 +2206,7 @@ const QUESTIONS = [
     "studies": [
       {
         "title": "Accelerated telomere shortening in response to life stress",
-        "journal": "PNAS (2004)",
+        "journal": "Proceedings of the National Academy of Sciences (2004)",
         "pmid": "15574496",
         "link": "https://pubmed.ncbi.nlm.nih.gov/15574496/"
       }
@@ -2311,16 +2311,10 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "Association of Subclinical Psychotic Experiences With Health Outcomes and Mortality",
-        "journal": "JAMA Psychiatry (2017)",
-        "pmid": "28746706",
-        "link": "https://pubmed.ncbi.nlm.nih.gov/28746706/"
-      },
-      {
-        "title": "Schizotypal personality traits and all-cause mortality: prospective cohort",
-        "journal": "Schizophrenia Research (2015)",
-        "pmid": "25892556",
-        "link": "https://pubmed.ncbi.nlm.nih.gov/25892556/"
+        "title": "Psychotic experiences and risk of death in the general population: 24-27 year follow-up of the Epidemiologic Catchment Area study",
+        "journal": "The British Journal of Psychiatry (2015)",
+        "pmid": "25953893",
+        "link": "https://pubmed.ncbi.nlm.nih.gov/25953893/"
       }
     ],
     "o": [
@@ -2405,10 +2399,10 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "Persecutory ideation and its relationship to mortality and physical illness",
-        "journal": "Psychological Medicine (2016)",
-        "pmid": "27181512",
-        "link": "https://pubmed.ncbi.nlm.nih.gov/27181512/"
+        "title": "Late-life cynical distrust, risk of incident dementia, and mortality in a population-based cohort",
+        "journal": "Neurology (2014)",
+        "pmid": "24871875",
+        "link": "https://pubmed.ncbi.nlm.nih.gov/24871875/"
       }
     ],
     "o": [
@@ -2493,10 +2487,10 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "Association of Neuroticism and Emotional Instability With All-Cause Mortality in UK Biobank",
-        "journal": "JAMA Psychiatry (2020)",
-        "pmid": "32374360",
-        "link": "https://pubmed.ncbi.nlm.nih.gov/32374360/"
+        "title": "When Is Higher Neuroticism Protective Against Death? Findings From UK Biobank",
+        "journal": "Psychological Science (2017)",
+        "pmid": "28703694",
+        "link": "https://pubmed.ncbi.nlm.nih.gov/28703694/"
       }
     ],
     "o": [
@@ -2581,7 +2575,7 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "Attention-deficit/hyperactivity disorder and mortality: a nationwide cohort study",
+        "title": "Mortality in children, adolescents, and adults with attention deficit hyperactivity disorder: a nationwide cohort study",
         "journal": "The Lancet (2015)",
         "pmid": "25726514",
         "link": "https://pubmed.ncbi.nlm.nih.gov/25726514/"
@@ -2669,10 +2663,10 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "Depression and risk of mortality in a 60-year cohort study",
+        "title": "Depression and mortality in a longitudinal study: 1952-2011",
         "journal": "CMAJ (2017)",
-        "pmid": "29061854",
-        "link": "https://pubmed.ncbi.nlm.nih.gov/29061854/"
+        "pmid": "29061855",
+        "link": "https://pubmed.ncbi.nlm.nih.gov/29061855/"
       }
     ],
     "o": [
@@ -2757,10 +2751,10 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "Middle-age high normal serum sodium as a risk factor for accelerated biological aging",
-        "journal": "eBioMedicine / Lancet Discovery Science (2023)",
-        "pmid": "36599787",
-        "link": "https://pubmed.ncbi.nlm.nih.gov/36599787/"
+        "title": "Middle-age high normal serum sodium as a risk factor for accelerated biological aging, chronic diseases, and premature mortality",
+        "journal": "eBioMedicine (2023)",
+        "pmid": "36599719",
+        "link": "https://pubmed.ncbi.nlm.nih.gov/36599719/"
       }
     ],
     "o": [
@@ -2847,8 +2841,8 @@ const QUESTIONS = [
       {
         "title": "Urinary Sodium and Potassium Excretion, Mortality, and Cardiovascular Events",
         "journal": "New England Journal of Medicine (2014)",
-        "pmid": "25119047",
-        "link": "https://pubmed.ncbi.nlm.nih.gov/25119047/"
+        "pmid": "25119607",
+        "link": "https://pubmed.ncbi.nlm.nih.gov/25119607/"
       }
     ],
     "o": [
@@ -2933,10 +2927,10 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "Association of estimated glomerular filtration rate and albuminuria with all-cause and cardiovascular mortality",
+        "title": "Association of estimated glomerular filtration rate and albuminuria with all-cause and cardiovascular mortality in general population cohorts: a collaborative meta-analysis",
         "journal": "The Lancet (2010)",
-        "pmid": "20483483",
-        "link": "https://pubmed.ncbi.nlm.nih.gov/20483483/"
+        "pmid": "20483451",
+        "link": "https://pubmed.ncbi.nlm.nih.gov/20483451/"
       }
     ],
     "o": [
@@ -3021,10 +3015,10 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "Risk of acute myocardial infarction with NSAIDs in real world use: meta-analysis",
+        "title": "Risk of acute myocardial infarction with NSAIDs in real world use: bayesian meta-analysis of individual patient data",
         "journal": "BMJ (2017)",
-        "pmid": "28487399",
-        "link": "https://pubmed.ncbi.nlm.nih.gov/28487399/"
+        "pmid": "28487435",
+        "link": "https://pubmed.ncbi.nlm.nih.gov/28487435/"
       }
     ],
     "o": [
@@ -3197,10 +3191,10 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "Alcohol use and burden for 195 countries and territories: a systematic analysis for the Global Burden of Disease Study",
+        "title": "Alcohol use and burden for 195 countries and territories, 1990-2016: a systematic analysis for the Global Burden of Disease Study 2016",
         "journal": "The Lancet (2018)",
-        "pmid": "30139726",
-        "link": "https://pubmed.ncbi.nlm.nih.gov/30139726/"
+        "pmid": "30146330",
+        "link": "https://pubmed.ncbi.nlm.nih.gov/30146330/"
       }
     ],
     "o": [
@@ -3303,10 +3297,10 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "Parental longevity and offspring lifespan: findings from the UK Biobank",
-        "journal": "Aging Cell (2016)",
-        "pmid": "27566203",
-        "link": "https://pubmed.ncbi.nlm.nih.gov/27566203/"
+        "title": "Longer-Lived Parents and Cardiovascular Outcomes: 8-Year Follow-Up In 186,000 U.K. Biobank Participants",
+        "journal": "Journal of the American College of Cardiology (2016)",
+        "pmid": "27539182",
+        "link": "https://pubmed.ncbi.nlm.nih.gov/27539182/"
       }
     ],
     "o": [
@@ -3497,10 +3491,10 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "Cancer screening in the era of personalised medicine",
-        "journal": "The Lancet Oncology (2020)",
-        "pmid": "32171404",
-        "link": "https://pubmed.ncbi.nlm.nih.gov/32171404/"
+        "title": "Long-term mortality after screening for colorectal cancer",
+        "journal": "New England Journal of Medicine (2013)",
+        "pmid": "24047060",
+        "link": "https://pubmed.ncbi.nlm.nih.gov/24047060/"
       }
     ],
     "o": [
@@ -3673,7 +3667,7 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "Muscle-strengthening activities and risk of all-cause and cause-specific mortality: a systematic review",
+        "title": "Muscle-strengthening activities are associated with lower risk and mortality in major non-communicable diseases: a systematic review and meta-analysis",
         "journal": "British Journal of Sports Medicine (2022)",
         "pmid": "35228201",
         "link": "https://pubmed.ncbi.nlm.nih.gov/35228201/"
@@ -3761,7 +3755,7 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "Daily steps and all-cause mortality: a meta-analysis of 15 cohort studies",
+        "title": "Daily steps and all-cause mortality: a meta-analysis of 15 international cohorts",
         "journal": "The Lancet Public Health (2022)",
         "pmid": "35247352",
         "link": "https://pubmed.ncbi.nlm.nih.gov/35247352/"
@@ -3867,7 +3861,7 @@ const QUESTIONS = [
     },
     "studies": [
       {
-        "title": "Sedentary time and its association with risk for disease incidence, mortality, and hospitalization in adults",
+        "title": "Sedentary time and its association with risk for disease incidence, mortality, and hospitalization in adults: a systematic review and meta-analysis",
         "journal": "Annals of Internal Medicine (2015)",
         "pmid": "25599350",
         "link": "https://pubmed.ncbi.nlm.nih.gov/25599350/"

@@ -257,6 +257,13 @@
       rows.forEach((r) => r.classList.toggle("active", r.getAttribute("data-sys") === sysId));
 
       this.updateInspector();
+
+      if (window.innerWidth < 992 && !this.options.isQuizMode) {
+        const insp = document.getElementById(`${this.container.id}-inspector`);
+        if (insp) {
+          insp.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+      }
     }
 
     getSystemHealth(sysId) {

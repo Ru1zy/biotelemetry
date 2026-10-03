@@ -26,13 +26,13 @@
   padding: 18px;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
   position: relative;
-  overflow: hidden;
 }
 
 @media (min-width: 992px) {
   .bio-cockpit {
-    grid-template-columns: 280px 1fr 320px;
+    grid-template-columns: 280px 1fr 340px;
     align-items: stretch;
+    min-height: 520px;
   }
 }
 
@@ -358,12 +358,16 @@
 .bio-inspector-panel {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   background: var(--bio-surface);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-md);
   padding: 16px 18px;
   backdrop-filter: blur(12px);
+  min-height: 0;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .bio-insp-top {
@@ -372,7 +376,8 @@
   justify-content: space-between;
   padding-bottom: 12px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+  flex-shrink: 0;
 }
 
 .bio-insp-title {
@@ -414,29 +419,55 @@
   font-size: 12px;
   color: var(--text-secondary);
   line-height: 1.55;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+  flex-shrink: 0;
 }
 
 .bio-factors-box {
-  flex: 1;
-  overflow-y: auto;
-  max-height: 280px;
+  flex: 1 1 auto;
+  min-height: 120px;
+  max-height: 340px;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-bottom: 12px;
-  padding-right: 4px;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding-right: 6px;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(56, 189, 248, 0.5) rgba(255, 255, 255, 0.05);
+}
+
+.bio-factors-box::-webkit-scrollbar {
+  width: 6px;
+}
+
+.bio-factors-box::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.bio-factors-box::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.45);
+  border-radius: 4px;
+}
+
+.bio-factors-box::-webkit-scrollbar-thumb:hover {
+  background: var(--bio-cyan);
 }
 
 .bio-factor-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 10px;
+  padding: 9px 12px;
   background: rgba(0, 0, 0, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: var(--radius-sm);
   font-size: 11.5px;
+  flex-shrink: 0;
 }
 
 .bio-factor-card.pos { border-left: 3px solid var(--bio-emerald); }
@@ -677,4 +708,90 @@
   padding: 0 16px 16px 16px;
   border-top: 1px solid var(--border-subtle);
 }
+
+/* ==========================================
+   MOBILE & TABLET RESPONSIVE COCKPIT
+   ========================================== */
+@media (max-width: 991px) {
+  .bio-cockpit {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 14px;
+  }
+
+  .bio-systems-panel {
+    max-height: 240px;
+  }
+
+  .bio-systems-stack {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  .bio-sys-row {
+    padding: 7px 8px;
+    gap: 7px;
+  }
+
+  .bio-gauge-wrap {
+    width: 28px;
+    height: 28px;
+  }
+
+  .bio-gauge-icon {
+    font-size: 13px;
+  }
+
+  .bio-sys-name {
+    font-size: 10px;
+  }
+
+  .bio-sys-val {
+    font-size: 9.5px;
+  }
+
+  .bio-viewport-panel {
+    margin: 6px auto;
+    width: 100%;
+  }
+
+  .bio-body-frame {
+    max-width: 250px;
+    margin: 0 auto;
+  }
+
+  .bio-inspector-panel {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .bio-factors-box {
+    max-height: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .bio-cockpit {
+    padding: 10px;
+    gap: 12px;
+  }
+
+  .bio-systems-stack {
+    grid-template-columns: 1fr;
+    max-height: 180px;
+  }
+
+  .bio-layer-tabs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .bio-body-frame {
+    max-width: 220px;
+  }
+}
+
 

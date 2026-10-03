@@ -11,7 +11,7 @@
     currentSystem: "circulatory",
     currentQuestionIndex: 0,
     answers: {},
-    userAge: 28,
+    userAge: 25,
     userSex: "male",
     baseExpectancy: 74.0,
     quizCockpit: null,
@@ -435,17 +435,53 @@
     renderCurrentQuestion();
   }
 
-  function startQuiz() {
-    if (el.heroAgeInput) {
-      const parsed = parseInt(el.heroAgeInput.value, 10);
-      if (!isNaN(parsed) && parsed >= 14 && parsed <= 95) {
-        setAge(parsed, false);
+  function jumpToFirstUnanswered() {
+    if (!window.QUESTIONS) return false;
+    for (const q of window.QUESTIONS) {
+      if (!state.answers[q.id]) {
+        state.currentSystem = q.system;
+        const sysQuestions = getSystemQuestions(q.system);
+        const idx = sysQuestions.findIndex((item) => item.id === q.id);
+        state.currentQuestionIndex = Math.max(0, idx);
+        if (state.quizCockpit) {
+          state.quizCockpit.selectSystem(q.system);
+        }
+        renderSystemTabs();
+        renderCurrentQuestion();
+        return true;
       }
     }
+    return false;
+  }
+
+  function startQuiz() {
+    state.answers = {};
+    if (el.heroAgeInput) {
+      const parsed = parseInt(el.heroAgeInput.value, 10);
+      if (!isNaN(parsed) && parsed >= 14 && parsed <= 100) {
+        setAge(parsed, false);
+      }
+    } else {
+      setAge(state.userAge, false);
+    }
+
+    // Pre-populate baseline age question answer with exact chronological age
+    const ageQ = window.QUESTIONS ? window.QUESTIONS.find((q) => q.id === "age") : null;
+    if (ageQ) {
+      const match = findAgeOption(ageQ.o, state.userAge);
+      state.answers["age"] = {
+        ...match,
+        qId: "age",
+        system: "circulatory",
+        questionTitle: ageQ.q,
+        explanation: ageQ.explanation,
+        studies: ageQ.studies
+      };
+    }
+
     state.currentSystem = "circulatory";
     state.currentQuestionIndex = 0;
-    state.answers = {};
-    if (state.quizCockpit) state.quizCockpit.update({});
+    if (state.quizCockpit) state.quizCockpit.update(state.answers);
     switchScreen(el.screenIntro, el.screenQuiz);
     renderSystemTabs();
     renderCurrentQuestion();
@@ -485,8 +521,14 @@
         renderSystemTabs();
         renderCurrentQuestion();
       } else {
-        // All systems iterated!
-        startCalculation();
+        // Last question in last system reached — check if any questions remain unanswered
+        const totalCount = window.QUESTIONS ? window.QUESTIONS.length : 39;
+        const answeredCount = Object.keys(state.answers).length;
+        if (answeredCount < totalCount) {
+          jumpToFirstUnanswered();
+        } else {
+          startCalculation();
+        }
       }
     }
   }
@@ -592,8 +634,18 @@
       studies: q.studies
     };
 
-    if (q.id === "age" && opt.ageVal) {
-      setAge(opt.ageVal, false);
+    if (q.id === "age") {
+      // Keep exact user age if already within this option bracket!
+      // NEVER overwrite exact user age (e.g. 26 or 20) with opt.ageVal (28)
+      if (typeof opt.minAge === "number" && typeof opt.maxAge === "number") {
+        if (state.userAge < opt.minAge || state.userAge > opt.maxAge) {
+          setAge(opt.ageVal || opt.minAge, false);
+        } else {
+          setAge(state.userAge, false);
+        }
+      } else if (opt.ageVal) {
+        setAge(opt.ageVal, false);
+      }
     }
 
     if (q.id === "sex") {
@@ -651,6 +703,13 @@
 
   // Simulation Compilation
   function startCalculation() {
+    const totalCount = window.QUESTIONS ? window.QUESTIONS.length : 39;
+    const answeredCount = Object.keys(state.answers).length;
+    if (answeredCount < totalCount) {
+      jumpToFirstUnanswered();
+      return;
+    }
+
     switchScreen(el.screenQuiz, el.screenLoading);
 
     const simSteps = t("simSteps");
