@@ -202,6 +202,10 @@
           isQuizMode: true,
           onSystemSelect: (sysId) => {
             selectSystemModule(sysId);
+            const qCard = document.querySelector(".quiz-card");
+            if (qCard) {
+              qCard.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
           }
         });
       }

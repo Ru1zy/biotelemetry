@@ -171,10 +171,11 @@ body {
   position: relative;
   z-index: 10;
   flex: 1;
-  max-width: 960px;
+  max-width: 72rem;
   width: 100%;
   margin: 0 auto;
-  padding: 32px 20px 60px;
+  padding: clamp(1rem, 2.5vw, 2rem) clamp(0.75rem, 2vw, 1.25rem) clamp(2.5rem, 5vw, 3.75rem);
+  box-sizing: border-box;
 }
 
 /* Screen Transitions */
