@@ -33,11 +33,12 @@
 
 @media (min-width: 60rem) {
   .bio-cockpit {
-    grid-template-columns: clamp(13rem, 22vw, 15.5rem) minmax(14rem, 1fr) clamp(15rem, 26vw, 19.5rem);
+    grid-template-columns: minmax(18rem, 21.5rem) minmax(15.5rem, 1fr) minmax(19rem, 24rem);
     align-items: stretch;
     min-height: 30rem;
-    gap: clamp(0.75rem, 1.5vw, 1.125rem);
+    gap: clamp(0.875rem, 1.5vw, 1.25rem);
     padding: clamp(0.875rem, 1.5vw, 1.25rem);
+    justify-content: center;
   }
 }
 
@@ -172,11 +173,13 @@
   font-size: 0.71875rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.015em;
   color: #ffffff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
 }
 
 .bio-sys-val {
@@ -424,7 +427,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.375rem 0.625rem;
   padding-bottom: 0.625rem;
   border-bottom: 0.0625rem solid rgba(255, 255, 255, 0.06);
   margin-bottom: 0.5rem;
@@ -436,13 +440,12 @@
   display: flex;
   align-items: center;
   gap: 0.375rem;
-  font-size: clamp(0.8125rem, 1.5vw, 0.9375rem);
+  font-size: clamp(0.875rem, 1.4vw, 1rem);
   font-weight: 700;
   color: #ffffff;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.25;
 }
 
 .bio-insp-badge {

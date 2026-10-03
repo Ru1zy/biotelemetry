@@ -171,7 +171,7 @@ body {
   position: relative;
   z-index: 10;
   flex: 1;
-  max-width: 72rem;
+  max-width: 78rem;
   width: 100%;
   margin: 0 auto;
   padding: clamp(1rem, 2.5vw, 2rem) clamp(0.75rem, 2vw, 1.25rem) clamp(2.5rem, 5vw, 3.75rem);
@@ -234,6 +234,7 @@ body {
 .hero-title span {
   background: linear-gradient(135deg, #ffffff 40%, var(--accent-cyan) 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 

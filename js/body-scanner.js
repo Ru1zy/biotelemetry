@@ -96,19 +96,19 @@
           <div class="bio-viewport-panel">
             <!-- Layer Switcher Segmented Control -->
             <div class="bio-layer-tabs" role="tablist">
-              <button type="button" role="tab" class="bio-layer-btn ${this.activeLayer === "organs" ? "active" : ""}" data-layer="organs">
+              <button type="button" role="tab" class="bio-layer-btn ${this.activeLayer === "organs" ? "active" : ""}" data-layer="organs" title="${t("layers.organs")}">
                 <svg class="layer-tab-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 <span>${t("layers.organs")}</span>
               </button>
-              <button type="button" role="tab" class="bio-layer-btn ${this.activeLayer === "muscles" ? "active" : ""}" data-layer="muscles">
+              <button type="button" role="tab" class="bio-layer-btn ${this.activeLayer === "muscles" ? "active" : ""}" data-layer="muscles" title="${t("layers.muscles")}">
                 <svg class="layer-tab-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 18h12M6 6h12M9 12h6M4 10h16M4 14h16"/></svg>
                 <span>${t("layers.muscles")}</span>
               </button>
-              <button type="button" role="tab" class="bio-layer-btn ${this.activeLayer === "skeleton" ? "active" : ""}" data-layer="skeleton">
+              <button type="button" role="tab" class="bio-layer-btn ${this.activeLayer === "skeleton" ? "active" : ""}" data-layer="skeleton" title="${t("layers.skeleton")}">
                 <svg class="layer-tab-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M8 8l8 8"/></svg>
                 <span>${t("layers.skeleton")}</span>
               </button>
-              <button type="button" role="tab" class="bio-layer-btn ${this.activeLayer === "nerves" ? "active" : ""}" data-layer="nerves">
+              <button type="button" role="tab" class="bio-layer-btn ${this.activeLayer === "nerves" ? "active" : ""}" data-layer="nerves" title="${t("layers.nerves")}">
                 <svg class="layer-tab-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                 <span>${t("layers.nerves")}</span>
               </button>
@@ -185,21 +185,25 @@
         row.setAttribute("data-sys", sysId);
 
         const titleText = sys.title[lang] || sys.title.uk;
+        const descText = sys.desc[lang] || sys.desc.uk;
+        const countStr = `${stats.answeredCount}/${stats.totalCount}`;
+
+        row.setAttribute("title", `${titleText} — ${stats.health.toFixed(0)}% (${countStr})\n${descText}`);
 
         row.innerHTML = `
-          <div class="bio-gauge-wrap status-${stats.status}">
+          <div class="bio-gauge-wrap status-${stats.status}" title="${stats.health.toFixed(0)}%">
             <span class="bio-gauge-icon">${sys.icon}</span>
           </div>
           <div class="bio-sys-info">
             <div class="bio-sys-header">
-              <span class="bio-sys-name">${titleText}</span>
+              <span class="bio-sys-name" title="${titleText}">${titleText}</span>
               <span class="bio-sys-val">${stats.health.toFixed(0)}%</span>
             </div>
             <div class="bio-sys-track">
               <div class="bio-sys-fill status-${stats.status}" style="width: ${stats.health}%"></div>
             </div>
           </div>
-          <span class="bio-sys-count ${stats.isComplete ? "done" : ""}">${stats.answeredCount}/${stats.totalCount}</span>
+          <span class="bio-sys-count ${stats.isComplete ? "done" : ""}" title="${countStr}">${countStr}</span>
         `;
 
         row.addEventListener("click", () => this.selectSystem(sysId));
@@ -358,9 +362,18 @@
       const elDesc = document.getElementById(`${this.container.id}-insp-desc`);
       const elFactors = document.getElementById(`${this.container.id}-insp-factors`);
 
+      const titleText = sys.title[lang] || sys.title.uk;
+      const descText = sys.desc[lang] || sys.desc.uk;
+
       if (elIcon) elIcon.textContent = sys.icon;
-      if (elName) elName.textContent = sys.title[lang] || sys.title.uk;
-      if (elDesc) elDesc.textContent = sys.desc[lang] || sys.desc.uk;
+      if (elName) {
+        elName.textContent = titleText;
+        elName.setAttribute("title", titleText);
+      }
+      if (elDesc) {
+        elDesc.textContent = descText;
+        elDesc.setAttribute("title", descText);
+      }
 
       if (elBadge) {
         elBadge.className = `bio-insp-badge status-${stats.status}`;
@@ -368,6 +381,7 @@
         if (stats.status === "compensated") statusLabel = t("hud.statusCompensated");
         if (stats.status === "critical") statusLabel = t("hud.statusCritical");
         elBadge.textContent = `${stats.health}% (${statusLabel})`;
+        elBadge.setAttribute("title", `${stats.health}% — ${statusLabel}`);
       }
 
       if (elFactors) {
@@ -399,18 +413,19 @@
             const factorClass = f.delta > 0 ? "pos" : f.delta < 0 ? "neg" : "neutral";
             const sign = f.delta > 0 ? "+" : "";
             card.className = `bio-factor-card ${factorClass}`;
+            card.setAttribute("title", `${f.title}\n${f.optTitle} (${sign}${f.delta} ${t("unitYear")})`);
 
             card.innerHTML = `
               <div style="max-width: 72%;">
-                <div style="font-weight: 700; color: #ffffff;">${f.optTitle}</div>
-                <div style="font-size: 10px; color: var(--text-muted);">${f.title}</div>
+                <div style="font-weight: 700; color: #ffffff;" title="${f.optTitle}">${f.optTitle}</div>
+                <div style="font-size: 10px; color: var(--text-muted);" title="${f.title}">${f.title}</div>
               </div>
               <div style="text-align: right;">
                 <div style="font-family: var(--font-mono); font-weight: 700; font-size: 12px; color: ${f.delta > 0 ? "var(--bio-emerald)" : f.delta < 0 ? "var(--bio-rose)" : "var(--bio-cyan)"}">
                   ${sign}${f.delta} ${t("unitYear")}
                 </div>
                 ${f.studies && f.studies[0] ? `
-                  <a href="${f.studies[0].link}" target="_blank" rel="noopener noreferrer" style="font-size: 9.5px; color: var(--bio-cyan); text-decoration: none;">
+                  <a href="${f.studies[0].link}" target="_blank" rel="noopener noreferrer" style="font-size: 9.5px; color: var(--bio-cyan); text-decoration: none;" title="${f.studies[0].title || "PubMed"}">
                     PubMed ↗
                   </a>
                 ` : ""}
