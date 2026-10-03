@@ -26,6 +26,7 @@
     screenQuiz: document.getElementById("screen-quiz"),
     screenLoading: document.getElementById("screen-loading"),
     screenResult: document.getElementById("screen-result"),
+    brandHomeBtn: document.getElementById("brand-home-btn"),
     pbar: document.getElementById("pbar"),
     ptext: document.getElementById("ptext"),
     qCatBadge: document.getElementById("q-cat-badge"),
@@ -344,6 +345,17 @@
     if (el.btnRetake) el.btnRetake.addEventListener("click", resetQuiz);
     if (el.btnShare) el.btnShare.addEventListener("click", handleShare);
 
+    // Brand header click -> redirect to home
+    if (el.brandHomeBtn) {
+      el.brandHomeBtn.addEventListener("click", resetQuiz);
+      el.brandHomeBtn.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          resetQuiz();
+        }
+      });
+    }
+
     // Toggle Live Telemetry Drawer during Quiz
     const btnToggleTelemetry = $("btn-toggle-quiz-telemetry");
     const drawerCollapse = $("quiz-telemetry-collapse");
@@ -425,10 +437,57 @@
     }
   }
 
+  function findNextUnansweredQuestion(fromCurrent = true) {
+    if (!window.QUESTIONS) return null;
+    const sysKeys = Object.keys(window.SYSTEMS_INFO);
+
+    // 1. Search forward in current system
+    if (fromCurrent && state.currentSystem) {
+      const currQuestions = getSystemQuestions(state.currentSystem);
+      for (let i = state.currentQuestionIndex + 1; i < currQuestions.length; i++) {
+        const q = currQuestions[i];
+        if (!state.answers[q.id]) {
+          return { system: state.currentSystem, index: i, question: q };
+        }
+      }
+    }
+
+    // 2. Search subsequent systems in order, wrapping around
+    const startSysIdx = sysKeys.indexOf(state.currentSystem);
+    for (let offset = 1; offset < sysKeys.length; offset++) {
+      const sysIdx = (startSysIdx + offset) % sysKeys.length;
+      const sysId = sysKeys[sysIdx];
+      const sysQuestions = getSystemQuestions(sysId);
+      for (let i = 0; i < sysQuestions.length; i++) {
+        const q = sysQuestions[i];
+        if (!state.answers[q.id]) {
+          return { system: sysId, index: i, question: q };
+        }
+      }
+    }
+
+    // 3. Search backwards in current system from 0 to currentQuestionIndex - 1
+    if (state.currentSystem) {
+      const currQuestions = getSystemQuestions(state.currentSystem);
+      for (let i = 0; i < state.currentQuestionIndex; i++) {
+        const q = currQuestions[i];
+        if (!state.answers[q.id]) {
+          return { system: state.currentSystem, index: i, question: q };
+        }
+      }
+    }
+
+    return null; // All 39 questions answered!
+  }
+
   function selectSystemModule(sysId) {
     if (!window.SYSTEMS_INFO[sysId]) return;
     state.currentSystem = sysId;
-    state.currentQuestionIndex = 0;
+
+    // Jump to first unanswered question in this module, or question 0 if all are already answered
+    const sysQuestions = getSystemQuestions(sysId);
+    const firstUnanswered = sysQuestions.findIndex((q) => !state.answers[q.id]);
+    state.currentQuestionIndex = firstUnanswered !== -1 ? firstUnanswered : 0;
 
     // Sync body cockpit
     if (state.quizCockpit) {
@@ -440,20 +499,16 @@
   }
 
   function jumpToFirstUnanswered() {
-    if (!window.QUESTIONS) return false;
-    for (const q of window.QUESTIONS) {
-      if (!state.answers[q.id]) {
-        state.currentSystem = q.system;
-        const sysQuestions = getSystemQuestions(q.system);
-        const idx = sysQuestions.findIndex((item) => item.id === q.id);
-        state.currentQuestionIndex = Math.max(0, idx);
-        if (state.quizCockpit) {
-          state.quizCockpit.selectSystem(q.system);
-        }
-        renderSystemTabs();
-        renderCurrentQuestion();
-        return true;
+    const next = findNextUnansweredQuestion(false);
+    if (next) {
+      state.currentSystem = next.system;
+      state.currentQuestionIndex = next.index;
+      if (state.quizCockpit) {
+        state.quizCockpit.selectSystem(next.system);
       }
+      renderSystemTabs();
+      renderCurrentQuestion();
+      return true;
     }
     return false;
   }
@@ -504,6 +559,9 @@
         state.currentSystem = sysKeys[currIdx - 1];
         const prevQuestions = getSystemQuestions(state.currentSystem);
         state.currentQuestionIndex = Math.max(0, prevQuestions.length - 1);
+        if (state.quizCockpit) {
+          state.quizCockpit.selectSystem(state.currentSystem);
+        }
         renderSystemTabs();
         renderCurrentQuestion();
       }
@@ -511,29 +569,39 @@
   }
 
   function nextQuestion() {
-    const questions = getSystemQuestions(state.currentSystem);
-    if (state.currentQuestionIndex < questions.length - 1) {
-      state.currentQuestionIndex++;
+    const totalCount = window.QUESTIONS ? window.QUESTIONS.length : 39;
+    const answeredCount = Object.keys(state.answers).length;
+
+    // If all questions are answered, clicking next immediately triggers calculation
+    if (answeredCount >= totalCount) {
+      startCalculation();
+      return;
+    }
+
+    // Find next unanswered question (auto-skips already completed systems/questions)
+    const next = findNextUnansweredQuestion(true);
+    if (next) {
+      state.currentSystem = next.system;
+      state.currentQuestionIndex = next.index;
+      if (state.quizCockpit) {
+        state.quizCockpit.selectSystem(next.system);
+      }
+      renderSystemTabs();
+      renderCurrentQuestion();
+      return;
+    }
+
+    const any = findNextUnansweredQuestion(false);
+    if (any) {
+      state.currentSystem = any.system;
+      state.currentQuestionIndex = any.index;
+      if (state.quizCockpit) {
+        state.quizCockpit.selectSystem(any.system);
+      }
+      renderSystemTabs();
       renderCurrentQuestion();
     } else {
-      // Step into next system
-      const sysKeys = Object.keys(window.SYSTEMS_INFO);
-      const currIdx = sysKeys.indexOf(state.currentSystem);
-      if (currIdx < sysKeys.length - 1) {
-        state.currentSystem = sysKeys[currIdx + 1];
-        state.currentQuestionIndex = 0;
-        renderSystemTabs();
-        renderCurrentQuestion();
-      } else {
-        // Last question in last system reached — check if any questions remain unanswered
-        const totalCount = window.QUESTIONS ? window.QUESTIONS.length : 39;
-        const answeredCount = Object.keys(state.answers).length;
-        if (answeredCount < totalCount) {
-          jumpToFirstUnanswered();
-        } else {
-          startCalculation();
-        }
-      }
+      startCalculation();
     }
   }
 
@@ -579,14 +647,40 @@
       }
     }
 
-    // Nav button visibility
+    // Nav button visibility & CTA state
     const sysKeys = Object.keys(window.SYSTEMS_INFO);
     const isFirst = state.currentSystem === sysKeys[0] && state.currentQuestionIndex === 0;
     el.btnPrev.style.display = isFirst ? "none" : "inline-flex";
 
-    // Hide finish early button — all questions must be completed for valid results
-    if (el.btnFinishEarly) {
-      el.btnFinishEarly.style.display = "none";
+    const isAllComplete = answeredCount >= totalQuestions;
+
+    if (isAllComplete) {
+      // 100% complete! Transform btnNext into prominent CTA button to calculate results
+      el.btnNext.className = "btn-primary btn-calc-ready";
+      el.btnNext.style.display = "inline-flex";
+      el.btnNext.innerHTML = `
+        <span>⚡</span>
+        <span data-i18n="finishAndCalculate">${t("finishAndCalculate")}</span>
+        <span>→</span>
+      `;
+      if (el.btnFinishEarly) {
+        el.btnFinishEarly.className = "btn-primary btn-calc-ready";
+        el.btnFinishEarly.style.display = "inline-flex";
+        el.btnFinishEarly.innerHTML = `
+          <span>⚡</span>
+          <span data-i18n="finishAndCalculate">${t("finishAndCalculate")}</span>
+        `;
+      }
+    } else {
+      el.btnNext.className = "btn-secondary";
+      el.btnNext.style.display = "inline-flex";
+      el.btnNext.innerHTML = `
+        <span data-i18n="nextQuestion">${t("nextQuestion")}</span>
+        <span>→</span>
+      `;
+      if (el.btnFinishEarly) {
+        el.btnFinishEarly.style.display = "none";
+      }
     }
 
     // Render Options
@@ -665,7 +759,19 @@
 
     renderSystemTabs();
 
-    // Auto-advance
+    const totalCount = window.QUESTIONS ? window.QUESTIONS.length : 39;
+    const answeredCount = Object.keys(state.answers).length;
+
+    // Check if ALL questions across all systems are completed!
+    if (answeredCount >= totalCount) {
+      renderCurrentQuestion();
+      setTimeout(() => {
+        startCalculation();
+      }, 400);
+      return;
+    }
+
+    // Auto-advance to next unanswered question (with auto-skip)
     setTimeout(() => {
       nextQuestion();
     }, 180);
@@ -1109,7 +1215,17 @@
     state.currentSystem = "circulatory";
     state.currentQuestionIndex = 0;
     if (state.quizCockpit) state.quizCockpit.update({});
-    switchScreen(el.screenResult, el.screenIntro);
+
+    // Deactivate all screens and return cleanly to intro
+    [el.screenQuiz, el.screenLoading, el.screenResult].forEach((s) => {
+      if (s) s.classList.remove("active");
+    });
+
+    if (el.screenIntro) {
+      el.screenIntro.classList.add("active");
+    }
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function handleShare() {

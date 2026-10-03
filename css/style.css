@@ -111,6 +111,18 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.2s var(--ease-spring), opacity 0.2s ease;
+}
+
+.brand:hover {
+  transform: translateY(-1px);
+  opacity: 0.92;
+}
+
+.brand:active {
+  transform: scale(0.98);
 }
 
 .brand-icon {
@@ -747,6 +759,25 @@ body {
   border-color: var(--text-secondary);
   color: #ffffff;
   background: rgba(255, 255, 255, 0.04);
+}
+
+.quiz-nav .btn-primary {
+  padding: 10px 22px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.btn-calc-ready {
+  animation: pulse-emerald 2s infinite ease-in-out;
+}
+
+@keyframes pulse-emerald {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6), 0 4px 16px rgba(16, 185, 129, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0), 0 6px 22px rgba(16, 185, 129, 0.6);
+  }
 }
 
 .quiz-kbd-tip {
